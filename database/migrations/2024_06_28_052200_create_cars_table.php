@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
+            $table->string('brand');
+            $table->string('model');
+            $table->integer('year');
+            $table->double('price');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
         });
     }
@@ -23,5 +28,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('cars');
+        Schema::table('cars', function (Blueprint $table) {
+            //
+            $table->dropForeign(['user_id']);
+        });
     }
 };

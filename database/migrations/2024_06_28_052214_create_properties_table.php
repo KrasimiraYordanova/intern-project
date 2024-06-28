@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
+            $table->string('type');
+            $table->string('address');
+            $table->double('price');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
         });
     }
@@ -23,5 +27,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('properties');
+        Schema::table('properties', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+        });
     }
 };
