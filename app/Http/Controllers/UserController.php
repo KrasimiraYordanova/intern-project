@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Car;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class CarController extends Controller
+class UserController extends Controller
 {
-
-    public function __construct(Car $car) {}
     /**
      * Display a listing of the resource.
      */
-    public function index(Car $car)
+    public function index()
     {
         //
-        $cars = $car->getAll();
-        dd($cars);
-        return $cars;
     }
 
     /**
@@ -39,17 +34,15 @@ class CarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Car $car)
+    public function show(Role $role)
     {
-        return view('car', [
-            'car' => Car::find($id)
-        ]);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Car $car)
+    public function edit(Role $role)
     {
         //
     }
@@ -57,7 +50,7 @@ class CarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Car $car)
+    public function update(Request $request, Role $role)
     {
         //
     }
@@ -65,7 +58,7 @@ class CarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Car $car)
+    public function destroy(Role $role)
     {
         //
     }

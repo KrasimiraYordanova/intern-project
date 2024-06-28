@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.nav-flex {
+    display: flex;
+    gap: 2rem;
+}
