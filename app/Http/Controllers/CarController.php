@@ -8,16 +8,14 @@ use Illuminate\Http\Request;
 class CarController extends Controller
 {
 
-    public function __construct(Car $car) {}
+    public function __construct() {}
     /**
      * Display a listing of the resource.
      */
-    public function index(Car $car)
+    public function index(Car $cars)
     {
-        //
-        $cars = $car->getAll();
-        dd($cars);
-        return $cars;
+        $cars = Car::all();
+        return view('admin.car.index', ['cars' => $cars]);
     }
 
     /**
@@ -41,9 +39,7 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        return view('car', [
-            'car' => Car::find($id)
-        ]);
+        // 
     }
 
     /**

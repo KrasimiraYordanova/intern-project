@@ -10,9 +10,10 @@ class PropertyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Property $properties)
     {
-        //
+        $properties = Property::all();
+        return view('admin.property.index', ['properties' => $properties]);
     }
 
     /**
@@ -28,7 +29,20 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $data = $request->validate([
+            'type' => ['required'],
+            'address' => ['required'],
+            'price' => ['required']
+        ]);
+
+        $property = new Property();
+        $property->type = $data['type'];
+        $property->address = $data['address'];
+        $property->price = $data['price'];
+        $property->save();
+
+        return redirect()->route('property.detail', ['property' => $property->id])->with('success', 'Property added successfully!');
     }
 
     /**
@@ -36,7 +50,8 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
-        //
+        // $property = Property::findOrFail($property); --- with id
+        return view('admin.property.detail', ['property' => $property]);
     }
 
     /**
@@ -44,15 +59,28 @@ class PropertyController extends Controller
      */
     public function edit(Property $property)
     {
-        //
+        // $property = Property::findOrFail($property); --- with id
+        return view('admin.property.edit', ['property' => $property]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Property $property)
+    public function update( Property $property, Request $request)
     {
-        //
+        // dd($request->all());
+        $data = $request->validate([
+            'type' => ['required'],
+            'address' => ['required'],
+            'price' => ['required']
+        ]);
+        // $property = Property::findOrFail($property);
+        $property->type = $data['type'];
+        $property->address = $data['address'];
+        $property->price = $data['price'];
+        $property->save();
+
+        return redirect()->route('property.detail', ['property' => $property->id])->with('success', 'Property updated successfully!');
     }
 
     /**

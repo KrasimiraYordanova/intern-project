@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\PropertyController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,7 +27,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/cars', [CarController::class, 'index']);
-Route::get('/cars/{id}', [CarController::class, 'show']);
+// features:
+    // PROPERTY
+Route::get('/admin/properties', [PropertyController::class, 'index'])->name('property.index');
+Route::view('/admin/property/create', 'admin.property.create')->name('property.create');
+Route::get('/admin/property/{property}', [PropertyController::class, 'show'])->name('property.detail');
+Route::get('/admin/property/{property}/edit', [PropertyController::class, 'edit'])->name('property.edit');
+Route::post('/admin/property/store', [PropertyController::class, 'store'])->name('property.store');
+Route::put('/admin/property/{property}', [PropertyController::class, 'update'])->name('property.update');
+
+    // CAR
 
 require __DIR__.'/auth.php';

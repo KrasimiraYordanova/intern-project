@@ -27,6 +27,9 @@
                 </header>
             @endisset
 
+            @if(session()->has('success'))
+                <div>{{session('success')}}</div>
+            @endif
             <!-- Page Content -->
             <main>
                 {{ $slot }}

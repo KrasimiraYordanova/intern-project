@@ -12,17 +12,28 @@
         <div>
             <div>
                 <label for="type">Type of property</label>
-                <input type="text" name="type" id="type">
+                <input type="text" name="type" id="type" value="{{ old('type') }}">
             </div>
+            @error('type')
+                <p>{{ $message }}</p>
+            @enderror
             <div>
                 <label for="address">Property address</label>
-                <input type="text" name="address" id="address">
+                <input type="text" name="address" id="address" value="{{ old('address') }}>
             </div>
+            @error('address')
+                <p>{{ $message }}</p>
+            @enderror
             <div>
                 <label for="price">Property price</label>
-                <input type="text" name="price" id="price">
+                <input type="text" name="price" id="price" value="{{ old('price') }}>
             </div>
+            @error('price')
+                <p>{{ $message }}</p>
+            @enderror
         </div>
-    
+        <div>
+            <button type="submit">Add Property</button>
+        </div>
     </form>
 </x-app-layout>

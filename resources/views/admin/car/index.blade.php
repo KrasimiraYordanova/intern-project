@@ -1,5 +1,3 @@
-
-
 <x-app-layout>
     @if(count($cars) == 0)
         <p>No cars found</p>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 class Car extends Model
 {
@@ -32,17 +33,7 @@ class Car extends Model
 
 
     public function getAll() {
-        $cars = self::all();
+        $cars = DB::select('select * from cars');
         return $cars;
-    }
-
-    public function find($id) {
-        $cars = self::all();
-
-        foreach($cars as $car) {
-            if($car->id == $id) {
-                return $car;
-            }
-        }
     }
 }
