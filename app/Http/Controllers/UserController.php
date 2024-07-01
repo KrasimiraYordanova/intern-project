@@ -10,9 +10,10 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(User $users)
     {
-        //
+        $users = User::all();
+        return view('admin.user.index', ['users' => $users]);
     }
 
     /**
@@ -34,32 +35,40 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Role $role)
+    public function show(User $user)
     {
-        //
+         
+        return view('admin.user.detail', ['user' => $user]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Role $role)
+    public function edit(User $user)
     {
-        //
+        return view('admin.user.edit', ['user' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, User $user)
     {
-        //
+        $data = $request->validated();
+        $user->type = $data['type'];
+        $user->address = $data['address'];
+        $user->price = $data['price'];
+        $user->save();
+
+        return redirect()->route('user.detail', ['user' => $user->id])->with('success', 'User updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Role $role)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('user.index')->with('User deleted successfully!');
     }
 }

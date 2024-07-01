@@ -7,6 +7,10 @@
 
     <h1>List of Properties</h1>
 
+    @if(count($properties) == 0)
+        <p>No properties found</p>
+    @endif
+
     @foreach($properties as $property)
         <p><a href="{{ route( 'property.detail', ['property' => $property->id]) }} ">{{ $property->type }}</a></p>
     @endforeach

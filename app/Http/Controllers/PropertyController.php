@@ -97,7 +97,6 @@ class PropertyController extends Controller
     public function destroy(Property $property)
     {
         $property->delete();
-
-        return redirect()->route('property.index')->with('property deleted successfully');
+        return redirect()->route('property.index')->with('property deleted successfully!');
     }
 }

@@ -5,9 +5,9 @@
         </h2>
     </x-slot>
 
-    <h1>Property information</h1>
+    <h1>User information</h1>
 
-    <p>{{ $property->type }}</p>
-    <p>{{ $property->address }}</p>
-    <p>{{ $property->price }}</p>
+    <p>{{ $user->name }}</p>
+    <p>{{ $user->email }}</p>
+    <p>{{ $user->role_id }}</p>
 </x-app-layout>

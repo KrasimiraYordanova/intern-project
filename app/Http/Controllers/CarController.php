@@ -31,7 +31,16 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $data = $request->validated();
+
+        $car = new Car();
+        $car->type = $data['type'];
+        $car->address = $data['address'];
+        $car->price = $data['price'];
+        $car->save();
+
+        return redirect()->route('car.detail', ['car' => $car->id])->with('success', 'Car added successfully!');
     }
 
     /**
@@ -39,7 +48,7 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        // 
+        return view('admin.car.detail', ['car' => $car]);
     }
 
     /**
@@ -47,7 +56,7 @@ class CarController extends Controller
      */
     public function edit(Car $car)
     {
-        //
+        return view('admin.car.edit', ['car' => $car]);
     }
 
     /**
@@ -55,7 +64,13 @@ class CarController extends Controller
      */
     public function update(Request $request, Car $car)
     {
-        //
+        $data = $request->validated();
+        $car->type = $data['type'];
+        $car->address = $data['address'];
+        $car->price = $data['price'];
+        $car->save();
+
+        return redirect()->route('car.detail', ['car' => $car->id])->with('success', 'Car updated successfully!');
     }
 
     /**
@@ -63,6 +78,7 @@ class CarController extends Controller
      */
     public function destroy(Car $car)
     {
-        //
+        $car->delete();
+        return redirect()->route('car.index')->with('Car deleted successfully!');
     }
 }

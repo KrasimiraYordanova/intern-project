@@ -5,13 +5,13 @@
         </h2>
     </x-slot>
 
-    <h1>List of Cars</h1>
+    <h1>List of Users</h1>
 
-    @if(count($cars) == 0)
-        <p>No cars found</p>
+    @if(count($users) == 0)
+        <p>No users found</p>
     @endif
-    
-    @foreach($cars as $car)
-        <p><a href="{{ route( 'car.detail', ['car' => $car->id]) }} ">{{ $car->brand }}</a></p>
+
+    @foreach($users as $user)
+        <p><a href="{{ route( 'user.detail', ['user' => $user->id]) }} ">{{ $user->name }}</a></p>
     @endforeach
 </x-app-layout>

@@ -5,9 +5,10 @@
         </h2>
     </x-slot>
 
-    <h1>Property information</h1>
+    <h1>Car information</h1>
 
-    <p>{{ $property->type }}</p>
-    <p>{{ $property->address }}</p>
-    <p>{{ $property->price }}</p>
+    <p>{{ $car->brand }}</p>
+    <p>{{ $car->model }}</p>
+    <p>{{ $car->year }}</p>
+    <p>{{ $car->price }}</p>
 </x-app-layout>

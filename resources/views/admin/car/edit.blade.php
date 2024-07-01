@@ -5,22 +5,26 @@
         </h2>
     </x-slot>
 
-    <h1>Edit a Property</h1>
+    <h1>Edit car</h1>
 
 <form  method="POST">
     @csrf
     <div>
         <div>
-            <label for="type">Type of property</label>
-            <input type="text" name="type" id="type" value="{{$property->type}}">
+            <label for="brand">Car brand</label>
+            <input type="text" name="brand" id="brand" value="{{$car->brand}}">
         </div>
         <div>
-            <label for="address">Property address</label>
-            <input type="text" name="address" id="address" value="{{$property->address}}">
+            <label for="model">Car model</label>
+            <input type="text" name="model" id="model" value="{{$car->model}}">
         </div>
         <div>
-            <label for="price">Property price</label>
-            <input type="text" name="price" id="price" value="{{$property->price}}">
+            <label for="year">Car year</label>
+            <input type="text" name="year" id="year" value="{{$car->year}}">
+        </div>
+        <div>
+            <label for="price">Car price</label>
+            <input type="text" name="price" id="price" value="{{$car->price}}">
         </div>
     </div>
 
