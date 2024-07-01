@@ -28,14 +28,13 @@ Route::middleware('auth')->group(function () {
 });
 
 // features:
-    // PROPERTY
+    // PROPERTY    // CAR    // USER
 Route::get('/admin/properties', [PropertyController::class, 'index'])->name('property.index');
 Route::view('/admin/property/create', 'admin.property.create')->name('property.create');
 Route::get('/admin/property/{property}', [PropertyController::class, 'show'])->name('property.detail');
 Route::get('/admin/property/{property}/edit', [PropertyController::class, 'edit'])->name('property.edit');
 Route::post('/admin/property/store', [PropertyController::class, 'store'])->name('property.store');
 Route::put('/admin/property/{property}', [PropertyController::class, 'update'])->name('property.update');
-
-    // CAR
+Route::delete('/admin/delete?{property}', [PropertyController::class, 'destroy'])->name('property.destroy');
 
 require __DIR__.'/auth.php';

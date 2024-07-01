@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use Illuminate\Http\Request;
+use App\Http\Requests\PropertyRequest;
 
 class PropertyController extends Controller
 {
@@ -27,20 +28,24 @@ class PropertyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PropertyRequest $request)
     {
         // dd($request->all());
-        $data = $request->validate([
-            'type' => ['required'],
-            'address' => ['required'],
-            'price' => ['required']
-        ]);
+        $data = $request->validated();
+
+        // $data = $request->validate([
+        //     'type' => ['required'],
+        //     'address' => ['required'],
+        //     'price' => ['required']
+        // ]);
 
         $property = new Property();
         $property->type = $data['type'];
         $property->address = $data['address'];
         $property->price = $data['price'];
         $property->save();
+
+        // $property = Property::create($request->validated());
 
         return redirect()->route('property.detail', ['property' => $property->id])->with('success', 'Property added successfully!');
     }
@@ -66,19 +71,22 @@ class PropertyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update( Property $property, Request $request)
+    public function update( Property $property, PropertyRequest $request)
     {
         // dd($request->all());
-        $data = $request->validate([
-            'type' => ['required'],
-            'address' => ['required'],
-            'price' => ['required']
-        ]);
+        // $data = $request->validate([
+        //     'type' => ['required'],
+        //     'address' => ['required'],
+        //     'price' => ['required']
+        // ]);
+        $data = $request->validated();
         // $property = Property::findOrFail($property);
         $property->type = $data['type'];
         $property->address = $data['address'];
         $property->price = $data['price'];
         $property->save();
+
+        // $property->update($request->validated());
 
         return redirect()->route('property.detail', ['property' => $property->id])->with('success', 'Property updated successfully!');
     }
@@ -88,6 +96,8 @@ class PropertyController extends Controller
      */
     public function destroy(Property $property)
     {
-        //
+        $property->delete();
+
+        return redirect()->route('property.index')->with('property deleted successfully');
     }
 }

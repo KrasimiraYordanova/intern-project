@@ -10,4 +10,12 @@
     <p>{{ $property->type }}</p>
     <p>{{ $property->address }}</p>
     <p>{{ $property->price }}</p>
+
+    <div>
+        <form action="{{ route('property.destroy', ['property' => $property->id]) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type=submit>Delete Property</button>
+        </form>
+    </div>
 </x-app-layout>

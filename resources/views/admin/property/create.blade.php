@@ -19,14 +19,14 @@
             @enderror
             <div>
                 <label for="address">Property address</label>
-                <input type="text" name="address" id="address" value="{{ old('address') }}>
+                <input type="text" name="address" id="address" value="{{ old('address') }}">
             </div>
             @error('address')
                 <p>{{ $message }}</p>
             @enderror
             <div>
                 <label for="price">Property price</label>
-                <input type="text" name="price" id="price" value="{{ old('price') }}>
+                <input type="text" name="price" id="price" value="{{ old('price') }}">
             </div>
             @error('price')
                 <p>{{ $message }}</p>

@@ -11,7 +11,7 @@ class PropertyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,8 @@ class PropertyRequest extends FormRequest
     {
         return [
             'type' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string'],
+            'address' => ['required', 'string'],
+            'price' => ['required'],
         ];
     }
 }
