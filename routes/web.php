@@ -35,7 +35,7 @@ Route::get('/admin/dashboard', function () {
 
 // features:
     // PROPERTY    // CAR    // USER
-Route::get('/admin/properties', [PropertyController::class, 'index'])->name('property.index');
+Route::get('/admin/properties', [PropertyController::class, 'indexTwo'])->name('property.index');
 Route::get('/admin/users', [UserController::class, 'index'])->name('user.index');
 Route::get('/admin/cars', [CarController::class, 'index'])->name('car.index');
 

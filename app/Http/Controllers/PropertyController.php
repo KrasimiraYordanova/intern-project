@@ -11,9 +11,16 @@ class PropertyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Property $properties)
+    public function index()
     {
+        // Query scope implementation testing
+        // $propertyTypes = Property::type('house')->get();
         $properties = Property::all();
+        return view('admin.property.index', ['properties' => $properties]);
+    }
+
+    public function indexTwo() {
+        $properties = Property::queryAllProperties();
         return view('admin.property.index', ['properties' => $properties]);
     }
 

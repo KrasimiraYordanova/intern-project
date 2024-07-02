@@ -12,7 +12,7 @@ class CarController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Car $cars)
+    public function index()
     {
         $cars = Car::all();
         return view('admin.car.index', ['cars' => $cars]);
