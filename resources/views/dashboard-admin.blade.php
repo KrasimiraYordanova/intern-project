@@ -6,11 +6,7 @@
             </h2>
             
             <!-- nav links for models (users, cars, properties) -->
-            <ul class="nav-models-list nav-flex">
-                <li class="font-medium text-blue-600 dark:text-blue-500 hover:underline"><a href="{{ route('user.index') }}">Users</a></li>
-                <li class="font-medium text-blue-600 dark:text-blue-500 hover:underline"><a href="{{ route('property.index') }}">Properties</a></li>
-                <li class="font-medium text-blue-600 dark:text-blue-500 hover:underline"><a href="{{ route('car.index') }}">Cars</a></li>
-            </ul>
+            <x-navigation />
         </div>
     </x-slot>
 
@@ -26,11 +22,6 @@
 </x-app-layout>
 
 <style>
-    .nav-flex {
-        display: flex;
-        gap: 2rem;
-    }
-
     .nav-models-flex {
         display: flex;
         justify-content: space-between;

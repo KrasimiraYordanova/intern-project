@@ -27,13 +27,35 @@
                 </header>
             @endisset
 
+            <x-header title="List of Properties" class="pl-10">
+                <h3>Some additional text</h3>
+            </x-header>
+
             @if(session()->has('success'))
                 <div>{{session('success')}}</div>
             @endif
+
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+            @foreach ($properties as $property)
+                <x-property.property-item :property="$property" />
+            @endforeach
             </main>
+
+            <x-form.text-input
+                class="w-full sm:w-3/6 h-12"
+                name='name'
+                placeholder='name...'
+            />
+            <x-form.text-input
+                type='email'
+                class="w-full sm:w-3/6 h-12"
+                name='email'
+                placeholder='email...'
+            />
+
+            <x-widjets.button-primary>Submit</x-widjets.button-primary>
+
         </div>
     </body>
 </html>

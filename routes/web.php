@@ -6,9 +6,16 @@ use App\Http\Controllers\CarController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\PropertyController;
-use App\Models\User;
+use App\Models\Property;
 
-// COMMON ROUTE
+// TEST ROUTING
+// Route::get('/', function () {
+//     $properties = Property::all();
+//     return view('home', ['properties' => $properties]);
+// });
+
+
+// COMMON GUEST ROUTE
 Route::get('/', function () {
     return view('welcome');
 });
@@ -48,12 +55,19 @@ Route::get('/admin/user/{user}', [UserController::class, 'show'])->name('user.de
 Route::get('/admin/car/{car}', [CarController::class, 'show'])->name('car.detail');
 
 Route::get('/admin/property/{property}/edit', [PropertyController::class, 'edit'])->name('property.edit');
+Route::get('/admin/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+Route::get('/admin/car/{car}/edit', [CarController::class, 'edit'])->name('car.edit');
 
 Route::post('/admin/property/store', [PropertyController::class, 'store'])->name('property.store');
 Route::post('/admin/user/store', [UserController::class, 'store'])->name('user.store');
 Route::post('/admin/car/store', [CarController::class, 'store'])->name('car.store');
 
 Route::put('/admin/property/{property}', [PropertyController::class, 'update'])->name('property.update');
-Route::delete('/admin/delete?{property}', [PropertyController::class, 'destroy'])->name('property.destroy');
+Route::put('/admin/property/{user}', [UserController::class, 'update'])->name('user.update');
+Route::put('/admin/property/{car}', [CarController::class, 'update'])->name('car.update');
+
+Route::delete('/admin/delete/{property}', [PropertyController::class, 'destroy'])->name('property.destroy');
+Route::delete('/admin/delete/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+Route::delete('/admin/delete/{car}', [CarController::class, 'destroy'])->name('car.destroy');
 
 require __DIR__.'/auth.php';
