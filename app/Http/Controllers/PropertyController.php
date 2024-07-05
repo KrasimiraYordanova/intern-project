@@ -10,18 +10,14 @@ class PropertyController extends Controller
 {
     private $propertiesObject;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->propertiesObject = Property::all();
     }
 
-    public function indexAdmin()
+    public function index()
     {
         return view('admin.property.index', ['properties' => $this->propertiesObject]);
-    }
-
-    public function indexUser() {
-        $properties = Property::all();
-        return view('user.property.index', ['properties' => $properties]);
     }
 
     public function create()
@@ -29,6 +25,7 @@ class PropertyController extends Controller
         //
     }
 
+    // user can access
     public function store(PropertyRequest $request)
     {
         $data = $request->validated();
@@ -36,47 +33,54 @@ class PropertyController extends Controller
         $property = new Property();
         $property->type = $data['type'];
         $property->address = $data['address'];
-        $property->price = $data['price'];
+        $property->price = floatval($data['price']);
         $property->user_id = auth()->user()->id;
         $property->save();
 
         return redirect()->route('user.property.index', ['property' => $property->id])->with('success', 'Property added successfully!');
     }
 
-    public function showAdmin(Property $property)
+    public function show(Property $property)
     {
-        return view('admin.property.detail', ['property' => $property]);
+        if (auth()->user()->role_id == 1) {
+            return view('admin.property.detail', ['property' => $property]);
+        } else if ($property->user_id == auth()->user()->id) {
+            return view('user.property.detail', ['property' => $property]);
+        }
     }
 
-    public function showUser(Property $property)
-    {
-        return view('user.property.detail', ['property' => $property]);
-    }
-
+    // user can access
     public function edit(Property $property)
     {
         // $property = Property::findOrFail($property); --- with id
-        return view('user.property.edit', ['property' => $property]);
+        if ($property->user_id == auth()->user()->id) {
+            return view('user.property.edit', ['property' => $property]);
+        }
     }
 
-    public function update( Property $property, PropertyRequest $request)
+    // user can access
+    public function update(Property $property, PropertyRequest $request)
     {
         $data = $request->validated();
         $property->type = $data['type'];
         $property->address = $data['address'];
-        $property->price = $data['price'];
+        $property->price = floatval($data['price']);
         $property->save();
 
         return redirect()->route('user.property.detail', ['property' => $property->id])->with('success', 'Property updated successfully!');
     }
 
-    public function destroyProperty(Property $property)
+    // admins and users can access
+    public function destroy(Property $property)
     {
-        $property->delete();
-        if(auth()->user()->role_id == 1) {
-            return redirect()->route('user.property.index')->with('Property deleted successfully!');
+        if (auth()->user()->role_id == 1) {
+            $property->delete();
+            return redirect()->route('admin.property.index')->with('Property deleted successfully!');
         } else {
-            return redirect()->route('admin.property.index')->with('Car deleted successfully!');
+            if ($property->user_id == auth()->user()->id) {
+            $property->delete();
+                return redirect()->route('user.property.index')->with('Property deleted successfully!');
+            }
         }
     }
 }

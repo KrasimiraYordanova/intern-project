@@ -14,9 +14,50 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class=" center">
+                {{ __("All my properties and cars") }}
+            </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+                    {{ __("My properties") }}
+                    <!-- displaying user's cars and properties -->
+
+                    <table>
+                        <tr>
+                            <th>Type</th>
+                            <th>Address</th>
+                            <th>Price</th>
+                        </tr>
+
+                        @foreach($properties as $property)
+                        <tr>
+                            <td><a href="{{ route( 'user.property.detail', ['property' => $property->id]) }} ">{{ $property->type }}</a></td>
+                            <td>{{ $property->address }}</td>
+                            <td>{{ $property->price }}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+
+                    {{ __("My cars") }}
+                    <table>
+                        <tr>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Year</th>
+                            <th>Price</th>
+                        </tr>
+
+                        @foreach($cars as $car)
+                        <tr>
+                            <td><a href="{{ route( 'user.car.detail', ['car' => $car->id]) }} ">{{ $car->brand }}</a></td>
+                            <td>{{ $car->model }}</td>
+                            <td>{{ $car->year }}</td>
+                            <td>{{ $car->price }}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+
+
                 </div>
             </div>
         </div>
@@ -28,8 +69,36 @@
         display: flex;
         gap: 2rem;
     }
+
     .nav-models-flex {
         display: flex;
         justify-content: space-between;
+    }
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td,
+    th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+
+    table {
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+    }
+
+    .center {
+        text-align: center;
+        margin-bottom: 2rem;
     }
 </style>

@@ -13,14 +13,15 @@ class UserController extends Controller
 
     public function __construct() {
         $user = new User();
+
         $this->user = $user->getUser();
     }
 
 
     public function index()
     {
-        // $users = User::with(['roles', 'properties', 'cars'])->get();
         $users = User::all();
+
         return view('admin.user.index', ['users' => $users]);
     }
 

@@ -42,7 +42,7 @@
                         </div>
                         <div>
                             <x-widjets.button-primary>Edit property</x-widjets.button-primary>
-                            <x-widjets.button-primary>Dismiss</x-widjets.button-primary>
+                            <a href="{{ route('user.property.detail', [ 'property' => $property->id ]) }}">Dismiss</a>
                         </div>
                     </form>
                 </div>

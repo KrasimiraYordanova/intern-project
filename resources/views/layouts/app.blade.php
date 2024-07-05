@@ -50,9 +50,7 @@
 
 <script>
     $(document).ready(function() {
-        setTimeout(function() {
-            $('#flash').fadeIn();
-        }, 3000);
+        $('#flash').fadeIn().delay(2000).fadeOut('slow'); 
     });
 </script>
 
@@ -60,5 +58,6 @@
 <style>
     .flash {
         text-align: center;
+        color: red;
     }
 </style>

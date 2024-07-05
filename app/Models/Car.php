@@ -10,12 +10,9 @@ use Illuminate\Support\Facades\DB;
 class Car extends Model
 {
     use HasFactory;
+    
+    protected $table = 'cars';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'brand',
         'model',

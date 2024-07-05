@@ -37,7 +37,7 @@
                             </div>
                             <div>
                                 <x-widjets.button-primary>Edit car</x-widjets.button-primary>
-                                <x-widjets.button-primary>Dismiss</x-widjets.button-primary>
+                                <a href="{{ route('user.car.detail', [ 'car' => $car->id ]) }}">Dismiss</a>
                             </div>
                         </div>
                     </form>

@@ -24,8 +24,8 @@ class CarRequest extends FormRequest
         return [
             'brand' => ['required', 'string'],
             'model' => ['required', 'string'],
-            'year' => ['required'],
-            'price' => ['required'],
+            'year' => ['required', 'integer'],
+            'price' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
         ];
     }
 }
