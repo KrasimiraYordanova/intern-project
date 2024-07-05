@@ -6,7 +6,7 @@
             </h2>
             
             <!-- nav links for models (users, cars, properties) -->
-            <x-navigation />
+            @include('custom-navigation')
         </div>
     </x-slot>
 
@@ -26,13 +26,12 @@
 
                         @foreach($properties as $property)
                         <tr>
-                            <td><a href="{{ route( 'property.detail', ['property' => $property->id]) }} ">{{ $property->id }}</a></td>
+                            <td><a href="{{ route( 'admin.property.detail', ['property' => $property->id]) }} ">{{ $property->id }}</a></td>
                             <td>{{ $property->type }}</td>
                             <td>{{ $property->address }}</td>
                             <td>{{ $property->price }}</td>
                             <td>
-                                <p><a href="{{ route('property.edit', ['property' => $property->id]) }}">Edit</a></p>
-                                <p><a href="{{ route('property.destroy' , ['property' => $property->id]) }}">Delete</a></p>
+                                <p><a href="{{ route('admin.property.destroy' , ['property' => $property->id]) }}">Delete</a></p>
                             </td>
                         </tr>
                         @endforeach

@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class AppLayout extends Component
 {
@@ -12,6 +13,9 @@ class AppLayout extends Component
      */
     public function render(): View
     {
-        return view('layouts.app');
+        $loggedUser = Auth::user();
+        $loggedUserRoleId = $loggedUser->role_id;
+        
+        return view('layouts.app', ['loggedUserRoleId' => $loggedUserRoleId]);
     }
 }

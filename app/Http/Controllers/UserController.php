@@ -8,26 +8,40 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    private $user; 
+
+    public function __construct() {
+        $user = new User();
+        $this->user = $user->getUser();
+    }
+
+
     public function index()
     {
+        // $users = User::with(['roles', 'properties', 'cars'])->get();
         $users = User::all();
         return view('admin.user.index', ['users' => $users]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function propertiesByUser()
+    {
+        // dd($this->user->properties);
+        $usersProperties = User::find(auth()->user()->id)->properties()->get();
+        return view('user.property.index', ['usersProperties' => $usersProperties]);
+    }
+
+    public function carsByUser()
+    {
+        $usersCars = User::find(auth()->user()->id)->cars()->get();
+        return view('user.car.index', ['usersCars' => $usersCars]);
+    }
+
     public function create()
     {
         //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(UserRequest $request)
     {
         $data = $request->validated();
@@ -38,36 +52,22 @@ class UserController extends Controller
         $user->price = $data['price'];
         $user->save();
 
-        // $user = User::create($request->validated());
-
-        return redirect()->route('user.detail', ['user' => $user->id])->with('success', 'User added successfully!');
+        return redirect()->route('admin.user.detail', ['user' => $user->id])->with('success', 'User added successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(User $user)
     {
          
         return view('admin.user.detail', ['user' => $user]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(User $user)
     {
         return view('admin.user.edit', ['user' => $user]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(User $user, Request $request)
     {
-        // dd($request->all());
-        // $data = $request->validated();
-
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required',
@@ -79,15 +79,12 @@ class UserController extends Controller
         $user->role_id = $data['role_id'];
         $user->save();
 
-        return redirect()->route('user.detail', ['user' => $user->id])->with('success', 'User updated successfully!');
+        return redirect()->route('admin.user.detail', ['user' => $user->id])->with('success', 'User updated successfully!');
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('user.index')->with('User deleted successfully!');
+        return redirect()->route('admin.user.index')->with('User deleted successfully!');
     }
 }

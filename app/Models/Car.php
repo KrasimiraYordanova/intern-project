@@ -20,7 +20,10 @@ class Car extends Model
         'brand',
         'model',
         'year',
-        'price'
+        'price',
+        'user_id',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -32,8 +35,18 @@ class Car extends Model
     }
 
 
-    public function getAll() {
+    public function getAll()
+    {
         $cars = DB::select('select * from cars');
         return $cars;
+    }
+
+    public function scopeQueryAllCarsByUser($userId)
+    {
+        $users = DB::table('cars')
+            ->where('user_id', '=', $userId)
+            ->get();
+
+            return $users;
     }
 }

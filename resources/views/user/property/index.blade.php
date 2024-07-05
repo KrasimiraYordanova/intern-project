@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="nav-models nav-models-flex">
+    <div class="nav-models nav-models-flex">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Cars list') }}
+                {{ __('Properties list') }}
             </h2>
-
+            
             <!-- nav links for models (users, cars, properties) -->
             @include('custom-navigation')
         </div>
@@ -12,31 +12,24 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <a href="{{ route('user.property.create') }}">Add property</a>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 text-center">
 
                     <table>
                         <tr>
                             <th>Id</th>
-                            <th>Brand</th>
-                            <th>Model</th>
-                            <th>Year</th>
+                            <th>Type</th>
+                            <th>Address</th>
                             <th>Price</th>
-                            @if(Auth::user()->role_id)
-                            <th>Actions</th>
-                            @endif
                         </tr>
 
-                        @foreach($cars as $car)
+                        @foreach($usersProperties as $property)
                         <tr>
-                            <td><a href="{{ route( 'admin.car.detail', ['car' => $car->id]) }} ">{{ $car->id }}</a></td>
-                            <td>{{ $car->brand }}</td>
-                            <td>{{ $car->model }}</td>
-                            <td>{{ $car->year }}</td>
-                            <td>{{ $car->price }}</td>
-                            <td>
-                                <p><a href="{{ route('admin.car.destroy' , ['car' => $car->id]) }}">Delete</a></p>
-                            </td>
+                            <td><a href="{{ route( 'user.property.detail', ['property' => $property->id]) }} ">{{ $property->id }}</a></td>
+                            <td>{{ $property->type }}</td>
+                            <td>{{ $property->address }}</td>
+                            <td>{{ $property->price }}</td>
                         </tr>
                         @endforeach
                     </table>

@@ -5,8 +5,7 @@
                 {{ __('Add car') }}
             </h2>
 
-            <!-- nav links for models (users, cars, properties) -->
-            <x-navigation />
+            @include('custom-navigation')
         </div>
     </x-slot>
 
@@ -15,7 +14,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 text-center">
 
-                    <form action="{{ route('car.store') }}" method="POST">
+                    <form action="{{ route('user.car.store') }}" method="POST">
                         @csrf
                         <div>
                             <div>

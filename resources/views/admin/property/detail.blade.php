@@ -6,7 +6,7 @@
             </h2>
 
             <!-- nav links for models (users, cars, properties) -->
-            <x-navigation />
+            @include('custom-navigation')
         </div>
     </x-slot>
 

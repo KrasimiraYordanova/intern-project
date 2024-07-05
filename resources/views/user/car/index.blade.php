@@ -12,6 +12,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <a href="{{ route('user.car.create') }}">Add car</a>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 text-center">
 
@@ -22,21 +23,15 @@
                             <th>Model</th>
                             <th>Year</th>
                             <th>Price</th>
-                            @if(Auth::user()->role_id)
-                            <th>Actions</th>
-                            @endif
                         </tr>
 
-                        @foreach($cars as $car)
+                        @foreach($usersCars as $car)
                         <tr>
-                            <td><a href="{{ route( 'admin.car.detail', ['car' => $car->id]) }} ">{{ $car->id }}</a></td>
+                            <td><a href="{{ route( 'user.car.detail', ['car' => $car->id]) }} ">{{ $car->id }}</a></td>
                             <td>{{ $car->brand }}</td>
                             <td>{{ $car->model }}</td>
                             <td>{{ $car->year }}</td>
                             <td>{{ $car->price }}</td>
-                            <td>
-                                <p><a href="{{ route('admin.car.destroy' , ['car' => $car->id]) }}">Delete</a></p>
-                            </td>
                         </tr>
                         @endforeach
                     </table>

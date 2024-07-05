@@ -6,7 +6,7 @@
             </h2>
 
             <!-- nav links for models (users, cars, properties) -->
-            <x-navigation />
+            @include('custom-navigation')
         </div>
     </x-slot>
 
@@ -14,7 +14,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 text-center">
-                    <form method="POST" action="{{ route('car.update', [ 'car' => $car->id ]) }}">
+
+                    <form method="POST" action="{{ route('user.car.update', [ 'car' => $car->id ]) }}">
                         @csrf
                         @method('PUT')
                         <div>
@@ -39,8 +40,8 @@
                                 <x-widjets.button-primary>Dismiss</x-widjets.button-primary>
                             </div>
                         </div>
-
                     </form>
+                    
                 </div>
             </div>
         </div>

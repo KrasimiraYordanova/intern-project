@@ -4,9 +4,8 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Edit User') }}
             </h2>
-
             <!-- nav links for models (users, cars, properties) -->
-            <x-navigation />
+            @include('custom-navigation')
         </div>
     </x-slot>
 
@@ -15,7 +14,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 text-center">
 
-                    <form method="POST" action="{{ route('user.update', [ 'user' => $user->id ]) }}">
+                    <form method="POST" action="{{ route('admin.user.update', [ 'user' => $user->id ]) }}">
                         @csrf
                         @method('PUT')
                         <div>
@@ -33,7 +32,7 @@
                             </div>
                             <div>
                                 <x-widjets.button-primary>Edit user</x-widjets.button-primary>
-                                <a href="{{ route('user.index') }}">Dismiss</a>
+                                <a href="{{ route('admin.user.index') }}">Dismiss</a>
                             </div>
                         </div>
                     </form>

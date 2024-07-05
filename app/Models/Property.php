@@ -13,24 +13,15 @@ class Property extends Model
 {
     use HasFactory;
 
-     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'type',
         'address',
-        'price'
+        'price',
+        'user_id',
+        'created_at',
+        'updated_at'
     ];
 
-    // public function getRouteKeyName() {
-    //     return 'slug';
-    // }
-
-    /**
-     * Get the user that owns the car.
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -41,7 +32,7 @@ class Property extends Model
         return $query->where('type', 'LIKE', '%'.$type.'%');
     }
 
-    public function scopeQueryAllProperties() {
-        return DB::select('select * from properties');
+    public function scopeAllPropertiesByUser($user) {
+        return DB::select('select * from properties where user_id = ?', [$user]);
     }
 }
