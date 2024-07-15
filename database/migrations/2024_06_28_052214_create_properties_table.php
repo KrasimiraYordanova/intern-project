@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('address');
             $table->double('price');
+            $table->string('manufacturing');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
         });

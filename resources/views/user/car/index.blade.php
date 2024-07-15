@@ -12,13 +12,16 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <a href="{{ route('user.car.create') }}">Add car</a>
+            <a href="{{ route('user.car.create') }}" class="button">Add car</a>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 text-center">
 
+                    @if(@isset($cars))
+                    <p>There is no car records</p>
+                    @else
                     <table>
                         <tr>
-                            <th>Id</th>
+                            <!-- <th>Id</th> -->
                             <th>Brand</th>
                             <th>Model</th>
                             <th>Year</th>
@@ -27,14 +30,17 @@
 
                         @foreach($usersCars as $car)
                         <tr>
-                            <td><a href="{{ route( 'user.car.detail', ['car' => $car->id]) }} ">{{ $car->id }}</a></td>
-                            <td>{{ $car->brand }}</td>
+                            <!-- <div class="backgnd"> -->
+                            <td><a href="{{ route( 'user.car.detail', ['car' => $car->id]) }}" class="idLink">{{ $car->brand }}</a></td>
+                            <!-- </div> -->
+                            <!-- <td>{{ $car->brand }}</td> -->
                             <td>{{ $car->model }}</td>
                             <td>{{ $car->year }}</td>
                             <td>{{ $car->price }}</td>
                         </tr>
                         @endforeach
                     </table>
+                    @endif
                 </div>
             </div>
         </div>
@@ -48,6 +54,7 @@
     }
 
     table {
+        position: relative;
         font-family: arial, sans-serif;
         border-collapse: collapse;
         width: 100%;
@@ -62,5 +69,25 @@
 
     tr:nth-child(even) {
         background-color: #dddddd;
+    }
+
+    .button {
+        background-color: #000;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 0.3rem;
+        margin-bottom: 1rem;
+    }
+
+    .idLink {
+        display: inline-block;
+        width: 100%;
+        font-weight: 600;
+        color: #660f4e;
     }
 </style>

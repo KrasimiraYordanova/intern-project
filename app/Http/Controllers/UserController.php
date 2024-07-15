@@ -5,52 +5,56 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-
     private $user; 
 
     public function __construct() {
         $user = new User();
-
         $this->user = $user->getUser();
     }
 
 
     public function index()
     {
-        $users = User::all();
+        $users = User::with(['cars', 'properties'])->withTrashed()->get();
 
+        foreach ($users->flatMap->properties as $property) {
+            echo $property->brand;
+        }
+        
         return view('admin.user.index', ['users' => $users]);
     }
 
     public function propertiesByUser()
     {
-        // dd($this->user->properties);
-        $usersProperties = User::find(auth()->user()->id)->properties()->get();
+        $usersProperties = User::findOrFail(auth()->user()->id)->properties()->get();
         return view('user.property.index', ['usersProperties' => $usersProperties]);
     }
 
     public function carsByUser()
     {
-        $usersCars = User::find(auth()->user()->id)->cars()->get();
+        $usersCars = User::findOrFail(auth()->user()->id)->cars()->get();
         return view('user.car.index', ['usersCars' => $usersCars]);
     }
 
     public function create()
     {
-        //
     }
     
     public function store(UserRequest $request)
     {
+        // dd(request());
         $data = $request->validated();
 
         $user = new User();
-        $user->type = $data['type'];
-        $user->address = $data['address'];
-        $user->price = $data['price'];
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = Hash::make($data['password']);
+        $user->role = $data['role'];
+        // dd($user);
         $user->save();
 
         return redirect()->route('admin.user.detail', ['user' => $user->id])->with('success', 'User added successfully!');
@@ -58,7 +62,6 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-         
         return view('admin.user.detail', ['user' => $user]);
     }
 
@@ -72,12 +75,12 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'role_id' => 'required'
+            'role' => 'required'
         ]);
 
         $user->name = $data['name'];
         $user->email = $data['email'];
-        $user->role_id = $data['role_id'];
+        $user->role = $data['role'];
         $user->save();
 
         return redirect()->route('admin.user.detail', ['user' => $user->id])->with('success', 'User updated successfully!');

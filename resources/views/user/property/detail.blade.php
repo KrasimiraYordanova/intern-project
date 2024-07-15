@@ -13,39 +13,43 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 text-center">
-                    <p>{{ $property->type }}</p>
-                    <p>{{ $property->address }}</p>
-                    <p>{{ $property->price }}</p>
+                <div class="p-6 text-gray-900">
+                    <div class="item">
+                        <div class="detail">
+                            <p>Type: <span class="item-info">{{ $property->type }}</span></p>
+                            <p>Address: <span class="item-info">{{ $property->address }}</span></p>
+                            <p>Price: <span class="item-info">{{ $property->price }}</span></p>
+                        </div>
+                        <div class="buttonsGroup">
+                            <!-- <button id="item-id" data-userId="{{ Auth::user()->id }}" data-itemName="property" data-task="{{ $property->id }}" class="itemId">Save property</button> -->
+                            <!-- <button id="item-id" data-itemType="property" data-task="{{ $property->id }}" class="itemId">Save property</button> -->
 
-                    <!-- <button id="item-id" data-userId="{{ Auth::user()->id }}" data-itemName="property" data-task="{{ $property->id }}" class="itemId">Save property</button> -->
-                    <!-- <button id="item-id" data-itemType="property" data-task="{{ $property->id }}" class="itemId">Save property</button> -->
-
-                    <a href="{{ route('user.property.index') }}">go back</a>
-                    <p><a href="{{ route('user.property.edit', ['property' => $property->id]) }}">Edit</a></p>
-                    <button onclick="document.getElementById('id01').style.display='block'">Delete/Opening_modal</button>
+                            <a href="{{ route('user.property.index') }}" class="button button-size"><- go back</a>
+                            <p><a href="{{ route('user.property.edit', ['property' => $property->id]) }}" class="button button-size">Edit</a></p>
+                            <button onclick="document.getElementById('id01').style.display='block'" class="button button-size">Delete</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-    
-    <div id="id01" class="modal">
-        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
-        <form class="modal-content" method="POST" action="{{ route('user.property.destroy' , ['property' => $property->id]) }}">
-        @csrf
-            <div class="container">
-                <h1>Delete Car</h1>
-                <p>Are you sure you want to delete this car?</p>
 
-                <div class="clearfix">
-                    <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                    <button onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</button>
+        <div id="id01" class="modal">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
+            <form class="modal-content" method="POST" action="{{ route('user.property.destroy' , ['property' => $property->id]) }}">
+                @csrf
+                <div class="container">
+                    <h1>Delete Car</h1>
+                    <p>Are you sure you want to delete this car?</p>
+
+                    <div class="clearfix">
+                        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                        <button onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</button>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
 
 </x-app-layout>
 
@@ -82,17 +86,17 @@
         /* Full height */
         overflow: auto;
         /* Enable scroll if needed */
-        background-color: #474e5d;
+        background-color:#660f4e;
         padding-top: 50px;
     }
 
     /* Modal Content/Box */
     .modal-content {
-        background-color: #fefefe;
+        background-color: #fff;
         margin: 5% auto 15% auto;
         /* 5% from the top, 15% from the bottom and centered */
-        border: 1px solid #888;
-        width: 80%;
+        /* border: 1px solid #888; */
+        width: 50%;
         /* Could be more or less, depending on screen size */
     }
 
@@ -116,6 +120,43 @@
         font-weight: bold;
         color: #f1f1f1;
     }
+
+    .item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem
+    }
+
+    .detail p:not(:last-child) {
+        margin-bottom: 0.5rem;
+    }
+
+    .buttonsGroup {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .button {
+        background-color: #000;
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 0.3rem;
+        margin-bottom: 1rem;
+    }
+
+    .button-size {
+        width: 6rem;
+        padding: 0.4rem 0.3rem;
+    }
+
+    .item-info {
+        font-weight: 800;
+    }
 </style>
 
 
@@ -128,21 +169,25 @@
         // selecting the button element
         $(".itemId").on("click", function() {
             event.preventDefault();
-        // getting the data(id) from the attribute of the button element
+            // getting the data(id) from the attribute of the button element
             const itemId = this.getAttribute('data-task');
             const itemType = this.getAttribute('data-itemType');
 
             $.ajax({
                 type: 'PUT',
                 url: url,
-                data: { _token: "{{ csrf_token() }}", id : itemId, type : itemType },
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: itemId,
+                    type: itemType
+                },
                 dataType: 'JSON',
                 // success: function(data, textStatus, jq) {
                 success: function(response) {
                     console.log(response);
                 },
                 // error: function(errorThrown, textStatus, jq){
-                error: function(response){
+                error: function(response) {
                     console.log(response);
                 }
             })

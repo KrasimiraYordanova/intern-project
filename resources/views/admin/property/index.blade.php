@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-    <div class="nav-models nav-models-flex">
+        <div class="nav-models nav-models-flex">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Properties list') }}
             </h2>
-            
+
             <!-- nav links for models (users, cars, properties) -->
             @include('custom-navigation')
         </div>
@@ -15,6 +15,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 text-center">
 
+                    @if(count($properties) === 0)
+                    <p>There is no property records</p>
+                    @else
                     <table>
                         <tr>
                             <th>Id</th>
@@ -25,18 +28,18 @@
                         </tr>
 
                         @foreach($properties as $property)
-                        <tr>
+                        <tr class="{{ $property->deleted_at ? 'scratched' : '' }}">
                             <td><a href="{{ route( 'admin.property.detail', ['property' => $property->id]) }} ">{{ $property->id }}</a></td>
                             <td>{{ $property->type }}</td>
                             <td>{{ $property->address }}</td>
                             <td>{{ $property->price }}</td>
                             <td>
-                            <button onclick="document.getElementById('id01').style.display='block'">Delete/Opening_modal</button>
+                                <button onclick="document.getElementById('id01').style.display='block'">Delete</button>
                             </td>
                         </tr>
                         @endforeach
                     </table>
-
+                    @endif
                 </div>
             </div>
         </div>
@@ -44,6 +47,7 @@
 
 
 
+    @if(count($properties) !== 0)
     <div id="id01" class="modal">
         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
         <form class="modal-content" method="POST" action="{{ route('admin.property.destroy' , ['property' => $property->id]) }}">
@@ -59,6 +63,7 @@
             </div>
         </form>
     </div>
+    @endif
 
 </x-app-layout>
 
@@ -96,6 +101,11 @@
     tr:nth-child(even) {
         background-color: #dddddd;
     }
+
+    .scratched {
+        text-decoration: line-through;
+    }
+
 
 
     .modal {

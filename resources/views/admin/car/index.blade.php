@@ -15,6 +15,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 text-center">
 
+                    @if(count($cars) === 0)
+                    <p>There is no car records</p>
+                    @else
                     <table>
                         <tr>
                             <th>Id</th>
@@ -22,24 +25,25 @@
                             <th>Model</th>
                             <th>Year</th>
                             <th>Price</th>
-                            @if(Auth::user()->role_id)
-                            <th>Actions</th>
+                            @if(Auth::user()->role == 'admin')
+                            <th>Action</th>
                             @endif
                         </tr>
 
                         @foreach($cars as $car)
-                        <tr>
-                            <td><a href="{{ route( 'admin.car.detail', ['car' => $car->id]) }} ">{{ $car->id }}</a></td>
+                        <tr class="{{ $car->deleted_at ? 'scratched' : '' }}">
+                            <td><a href="{{ route( 'admin.car.detail', ['car' => $car->id]) }}">{{ $car->id }}</a></td>
                             <td>{{ $car->brand }}</td>
                             <td>{{ $car->model }}</td>
                             <td>{{ $car->year }}</td>
                             <td>{{ $car->price }}</td>
                             <td>
-                                <button onclick="document.getElementById('id01').style.display='block'">Delete/Opening_modal</button>
+                                <button onclick="document.getElementById('id01').style.display='block'">Delete</button>
                             </td>
                         </tr>
                         @endforeach
                     </table>
+                    @endif
                 </div>
             </div>
         </div>
@@ -47,6 +51,7 @@
 
 
 
+    @if(count($cars) !== 0)
     <div id="id01" class="modal">
         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
         <form class="modal-content" method="POST" action="{{ route('admin.car.destroy' , ['car' => $car->id]) }}">
@@ -62,6 +67,7 @@
             </div>
         </form>
     </div>
+    @endif
 
 </x-app-layout>
 
@@ -98,6 +104,10 @@
 
     tr:nth-child(even) {
         background-color: #dddddd;
+    }
+
+    .scratched{
+        text-decoration: line-through;
     }
 
 

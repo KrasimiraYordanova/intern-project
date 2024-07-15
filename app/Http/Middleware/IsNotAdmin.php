@@ -18,9 +18,9 @@ class IsNotAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->user() && $request->user()->role_id == 2) {
+        if($request->user() && $request->user()->role === 'user') {
             return $next($request);
         }
-        return redirect('admin-dashboard');
+        return redirect()->route('admin-dashboard');
     }
 }

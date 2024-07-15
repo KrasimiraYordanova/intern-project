@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Property extends Model
 {
-    use HasFactory;
+    use HasFactory; use SoftDeletes;
 
     protected $table = 'properties';
 
@@ -19,9 +20,8 @@ class Property extends Model
         'type',
         'address',
         'price',
+        'manufacturing',
         'user_id',
-        'created_at',
-        'updated_at'
     ];
 
     public function user(): BelongsTo

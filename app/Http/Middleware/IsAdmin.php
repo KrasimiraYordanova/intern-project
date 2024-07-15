@@ -19,10 +19,10 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->user() && $request->user()->role_id == 1) {
+        if($request->user() && $request->user()->role === 'admin') {
             return $next($request);
         }
 
-         return redirect('dashboard');
+        return redirect()->route('dashboard');
     }
 }

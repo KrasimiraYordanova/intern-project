@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Car extends Model
 {
-    use HasFactory;
+    use HasFactory; use SoftDeletes;
     
     protected $table = 'cars';
 
@@ -18,9 +19,8 @@ class Car extends Model
         'model',
         'year',
         'price',
+        'manufacturing',
         'user_id',
-        'created_at',
-        'updated_at'
     ];
 
     /**

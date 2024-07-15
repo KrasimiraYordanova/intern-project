@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('model');
             $table->integer('year');
             $table->double('price');
+            $table->string('manufacturing');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
         });
@@ -29,7 +30,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('cars');
         Schema::table('cars', function (Blueprint $table) {
-            //
             $table->dropForeign(['user_id']);
         });
     }

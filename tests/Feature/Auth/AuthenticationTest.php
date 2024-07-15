@@ -17,6 +17,38 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_user_can_view_a_login_form_page(): void {
+        $response = $this->get('/login');
+
+        $response->assertSuccessful();
+        $response->assertViewIs('auth.login');
+
+    }
+
+    public function test_user_cannot_view_a_login_form_page_when_authenticated():void {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/login');
+        $response->assertRedirect('/dashboard');
+    }
+
+    public function test_user_can_login_with_correct_credentials() {
+        $user = User::create([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'password' => bcrypt('secret'),
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => 'john@example.com',
+            'password' => 'secret',
+        ]);
+
+        // dd($response);
+        $response->assertRedirect(route('dashboard', absolute: false));
+        $this->assertAuthenticatedAs($user);
+    }
+
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
         $user = User::factory()->create();

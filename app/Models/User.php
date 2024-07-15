@@ -3,16 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable; use SoftDeletes;
 
     protected $table = 'users';
 
@@ -20,11 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'created_at',
-        'updated_at',
-        'role_id',
-        'car_id',
-        'property_id'
+        'role',
     ];
 
     protected $hidden = [
@@ -32,17 +29,31 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    // deleting related model using events
+    public static function boot() {
+        parent::boot();
+
+        // static::deleting(function ( User $user) {
+        //     $user->cars()->delete();
+        //     $user->properties()->delete();
+        // });
+
+        // static::updating(function(User $user) {
+        //     Cache::
+        // })
+
+        // static::restoring(function (User $user) {
+        //     $user->cars()->delete();
+        // });
+    }
+
+
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function role(): HasOne
-    {
-        return $this->hasOne(Role::class);
     }
 
     public function cars(): HasMany
@@ -55,16 +66,11 @@ class User extends Authenticatable
         return $this->hasMany(Property::class);
     }
 
-    public function scopeQueryJoinCarsAndPropertiesToUserTable() {
-        return DB::table('users')
-        ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
-        ->leftJoin('cars', 'users.car_id', '=', 'cars.id')
-        ->leftJoin('properties', 'users.property_id', '=', 'properties.id')
-        ->select()
-        ->get();
-    }
-
     public function getUser() {
         return auth()->user();
+    }
+
+    public function scopeGetAdmins(Builder $query) {
+        return $query->where('role_id', 1);
     }
 }

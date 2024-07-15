@@ -17,7 +17,17 @@ class DashboardController extends Controller
         // $userBelongings = User::find(auth()->user()->id)->with(['role', 'car', 'property']);
         $cars = Car::where('user_id', '=', auth()->user()->id)->get();
         $properties = Property::where('user_id', '=', auth()->user()->id)->get();
-        // dd($properties);
+        // $cars = Car::all();
+        // $properties = Property::all();
         return view('dashboard', ['cars' => $cars, 'properties' => $properties]);
+    }
+
+    public function allCarsAndProperties()
+    {
+        $cars = Car::all();
+        $properties = Property::all();
+        $users = User::all();
+        // dd($users);
+        return view('dashboard-admin', ['cars' => $cars, 'properties' => $properties, 'users' => $users]);
     }
 }

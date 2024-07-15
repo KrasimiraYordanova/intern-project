@@ -18,7 +18,7 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
-        @if ($loggedUserRoleId == 1)
+        @if (Auth::user()->role === 'admin')
         @include('layouts.navigation-admin')
         @else
         @include('layouts.navigation')

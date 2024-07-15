@@ -12,37 +12,51 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <a href="{{ route('admin.user.create') }}" class="button">Add user</a>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 text-center">
-                    
+
+                    @if(count($users) === 0)
+                    <p>There is no property records</p>
+                    @else
                     <table>
                         <tr>
                             <th>Id</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
-                            <th>Car</th>
-                            <th>Property</th>
+                            <th>Cars</th>
+                            <th>Properties</th>
                             <th>Actions</th>
                         </tr>
 
                         @foreach($users as $user)
-                        @dd($user->cars)
-                        <tr>
+                        <tr class="{{ $user->deleted_at ? 'scratched' : '' }}">
                             <td><a href="{{ route( 'admin.user.detail', ['user' => $user->id]) }} ">{{ $user->id }}</a></td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->role_id }}</td>
-                            <td>{{ $user->car_id }}</td>
-                            <td>{{ $user->property_id }}</td>
+                            <td>{{ $user->role }}</td>
+                            <td>
+                                <p>{{ $user->cars->count() }}</p>
+                                @foreach($user->cars as $car)
+                                <p><a href="{{ route( 'admin.car.detail', ['car' => $car->id]) }}">{{$car->brand}}</a></p>
+                                @endforeach
+                            </td>
+                            <td>
+                            <p>{{ $user->properties->count() }}</p>
+                                @foreach($user->properties as $property)
+                                <p><a href="{{ route( 'admin.property.detail', ['property' => $property->id]) }}">{{$property->type}}</a></p>
+                                @endforeach
+                            </td>
+
                             <td>
                                 <p><a href="{{ route('admin.user.edit', ['user' => $user->id]) }}">Edit</a></p>
-                                <button onclick="document.getElementById('id01').style.display='block'">Delete/Opening_modal</button>
+                                <button onclick="document.getElementById('id01').style.display='block'">Delete</button>
                             </td>
                         </tr>
                         @endforeach
                     </table>
-
+                    @endif
                 </div>
             </div>
         </div>
@@ -50,6 +64,7 @@
 
 
 
+    @if(count($users) !== 0)
     <div id="id01" class="modal">
         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
         <form class="modal-content" method="POST" action="{{ route('admin.user.destroy', ['user' => $user->id]) }}">
@@ -65,6 +80,7 @@
             </div>
         </form>
     </div>
+    @endif
 
 </x-app-layout>
 
@@ -101,6 +117,10 @@
 
     tr:nth-child(even) {
         background-color: #dddddd;
+    }
+
+    .scratched {
+        text-decoration: line-through;
     }
 
     .modal {
@@ -151,5 +171,19 @@
         font-size: 40px;
         font-weight: bold;
         color: #f1f1f1;
+    }
+
+    .button {
+        background-color: #000;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 0.3rem;
+        margin: 0 auto;
+        margin-bottom: 1rem;
     }
 </style>
