@@ -18,8 +18,8 @@
                         <p>{{ $user->name }}</p>
                         <p>{{ $user->email }}</p>
                         <p>{{ $user->role }}</p>
-                        <p><a href="{{ route('admin.user.usersCars', $user->id) }}">User's cars</a></p>
-                        <p><a href="{{ route('admin.user.usersProperties', $user->id) }}">User's properties</a></p>
+                        <p><a href="{{ route('admin.user.usersCars', [$user->id]) }}">User's cars</a></p>
+                        <p><a href="{{ route('admin.user.usersProperties', [$user->id]) }}">User's properties</a></p>
                     </div>
                 </div>
             </div>

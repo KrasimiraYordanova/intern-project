@@ -29,6 +29,7 @@
 
                         @foreach($properties as $property)
                         <tr class="{{ $property->deleted_at ? 'scratched' : '' }}">
+                            
                             <td><a href="{{ route( 'admin.property.detail', ['property' => $property->id]) }} ">{{ $property->id }}</a></td>
                             <td>{{ $property->type }}</td>
                             <td>{{ $property->address }}</td>

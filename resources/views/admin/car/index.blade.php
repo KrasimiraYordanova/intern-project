@@ -32,7 +32,7 @@
 
                         @foreach($cars as $car)
                         <tr class="{{ $car->deleted_at ? 'scratched' : '' }}">
-                            <td><a href="{{ route( 'admin.car.detail', ['car' => $car->id]) }}">{{ $car->id }}</a></td>
+                            <td><a href="{{ route( 'admin.car.detail', ['car' => $car->id]) }} ">{{ $car->id }}</a></td>
                             <td>{{ $car->brand }}</td>
                             <td>{{ $car->model }}</td>
                             <td>{{ $car->year }}</td>

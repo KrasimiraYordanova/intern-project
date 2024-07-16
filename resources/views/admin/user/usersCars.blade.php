@@ -32,13 +32,14 @@
 
                         @foreach($cars as $car)
                         <tr class="{{ $car->deleted_at ? 'scratched' : '' }}">
-                            <td><a href="{{ route( 'admin.car.detail', ['car' => $car->id]) }}">{{ $car->id }}</a></td>
+                            <td>{{ $car->id }}</td>
                             <td>{{ $car->brand }}</td>
                             <td>{{ $car->model }}</td>
                             <td>{{ $car->year }}</td>
                             <td>{{ $car->price }}</td>
                             <td>
-                                <button onclick="document.getElementById('id01').style.display='block'">Delete</button>
+                                <button type="button" class="carDeletionBtn" id="deleteCar" data-car-id='{{ $car->id }}'>Delete</button>
+                                <!-- <button onclick="document.getElementById('id01').style.display='block'" id="deleteModal" data-car-id="{{ $car->id }}">Delete</button> -->
                             </td>
                         </tr>
                         @endforeach
@@ -54,15 +55,16 @@
     @if(count($cars) !== 0)
     <div id="id01" class="modal">
         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
-        <form class="modal-content" method="POST" action="{{ route('admin.car.destroy' , ['car' => $car->id]) }}">
+        <form class="modal-content" method="POST" action="{{ route('admin.user.usersCarsDestroyCar' , [$car->user_id]) }}">
             @csrf
             <div class="container">
                 <h1>Delete Car</h1>
+                <input type="hidden" name="car_delete_id" id="car-id">
                 <p>Are you sure you want to delete this car?</p>
 
                 <div class="clearfix">
                     <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                    <button onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</button>
+                    <button type="submit" onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</button>
                 </div>
             </div>
         </form>
@@ -71,16 +73,15 @@
 
 </x-app-layout>
 
-<script>
-    // Get the modal
-    var modal = document.getElementById('id01');
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+<script>
+    $('.carDeletionBtn').click(function (e) {
+        e.preventDefault();
+        let carId = $(this).data('car-id');
+        $('#car-id').val(carId);
+        $('#id01').css("display", "block");
+    })
 </script>
 
 <style>

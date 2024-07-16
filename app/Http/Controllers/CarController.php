@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CarRequest;
 use App\Models\Car;
-use Illuminate\Http\Request;
 use App\Events\CarCreated;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
@@ -14,16 +14,16 @@ class CarController extends Controller
     {
     }
 
-    public function index(User $user)
+    public function index()
     {
-        $cars = Car::withTrashed()->get();
+        $cars = Car::all();
         return view('admin.car.index', ['cars' => $cars]);
     }
 
     public function usersCars(User $user)
     {
-        $cars = $user->cars()->withTrashed()->get();
-        return view('admin.user.usersCars', compact('user', 'cars'));
+        $cars = $user->cars()->get();
+        return view('admin.user.usersCars', compact('cars', 'user'));
     }
 
     public function create()
@@ -94,6 +94,18 @@ class CarController extends Controller
             if ($car->user_id == auth()->user()->id) {
                 $car->delete();
                 return redirect()->route('user.car.index')->with('Car deleted successfully!');
+            }
+        }
+    }
+
+    public function usersCarsDestroyCar(Request $request, User $user)
+    {
+        // dd($request);
+        if (auth()->user()->role === 'admin') {
+            $car = Car::find($request->car_delete_id);
+            if ($car) {
+                $car->delete();
+                return redirect()->route('admin.user.usersCars', $user->id)->with('Car deleted successfully!');
             }
         }
     }

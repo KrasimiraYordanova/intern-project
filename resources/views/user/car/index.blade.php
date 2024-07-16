@@ -26,6 +26,7 @@
                             <th>Model</th>
                             <th>Year</th>
                             <th>Price</th>
+                            <th>Manufacturing</th>
                         </tr>
 
                         @foreach($usersCars as $car)
@@ -37,6 +38,7 @@
                             <td>{{ $car->model }}</td>
                             <td>{{ $car->year }}</td>
                             <td>{{ $car->price }}</td>
+                            <td>{{ $car->manufacturing }}</td>
                         </tr>
                         @endforeach
                     </table>

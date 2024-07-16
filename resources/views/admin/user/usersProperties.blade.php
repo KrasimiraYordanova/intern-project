@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="nav-models nav-models-flex">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Properties of user number {{$user->id}} with name {{$user->name}}
+                Properties of user number {{$user->id}}: {{$user->name}}
             </h2>
 
             <!-- nav links for models (users, cars, properties) -->
@@ -29,7 +29,7 @@
 
                         @foreach($properties as $property)
                         <tr class="{{ $property->deleted_at ? 'scratched' : '' }}">
-                            <td><a href="{{ route( 'admin.property.detail', ['property' => $property->id]) }} ">{{ $property->id }}</a></td>
+                            <td>{{ $property->id }}</td>
                             <td>{{ $property->type }}</td>
                             <td>{{ $property->address }}</td>
                             <td>{{ $property->price }}</td>
@@ -50,11 +50,11 @@
     @if(count($properties) !== 0)
     <div id="id01" class="modal">
         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
-        <form class="modal-content" method="POST" action="{{ route('admin.property.destroy' , ['property' => $property->id]) }}">
+        <form class="modal-content" method="POST" accept="{{ route('admin.user.usersPropertiesDestroyProperty' , [$property->user_id, $property->id]) }}">
             @csrf
             <div class="container">
-                <h1>Delete Car</h1>
-                <p>Are you sure you want to delete this car?</p>
+                <h1>Delete Property</h1>
+                <p>Are you sure you want to delete this property?</p>
 
                 <div class="clearfix">
                     <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>

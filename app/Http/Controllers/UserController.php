@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::with(['cars', 'properties'])->withTrashed()->get();
+        $users = User::with(['cars', 'properties'])->get();
 
         foreach ($users->flatMap->properties as $property) {
             echo $property->brand;

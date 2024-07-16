@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PropertyRequest;
 
 class PropertyController extends Controller
-{   
+{
     private $propertiesObject;
 
     public function __construct()
     {
-        $this->propertiesObject = Property::withTrashed()->get();
+        $this->propertiesObject = Property::all();
     }
 
     public function index()
@@ -21,11 +21,11 @@ class PropertyController extends Controller
         return view('admin.property.index', ['properties' => $this->propertiesObject]);
     }
 
-    
+
     public function usersProperties(User $user)
     {
-        $properties = $user->properties()->withTrashed()->get();
-        return view('admin.user.usersProperties', compact('user', 'properties'));
+        $properties = Property::where('user_id', $user->id)->get();
+        return view('admin.user.usersProperties', compact('properties', 'user'));
     }
 
     public function create()
@@ -89,14 +89,21 @@ class PropertyController extends Controller
     // admins and users can access
     public function destroy(Property $property)
     {
+
         if (auth()->user()->role === 'admin') {
             $property->delete();
             return redirect()->route('admin.property.index')->with('Property deleted successfully!');
         } else {
             if ($property->user_id == auth()->user()->id) {
-            $property->delete();
+                $property->delete();
                 return redirect()->route('user.property.index')->with('Property deleted successfully!');
             }
         }
+    }
+
+    public function usersPropertiesDestroyProperty(User $user, Property $property)
+    {
+            $property->delete();
+            return redirect()->route('admin.user.usersProperties', $user->id)->with('Property deleted successfully!');
     }
 }

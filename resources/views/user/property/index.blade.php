@@ -25,6 +25,7 @@
                             <th>Type</th>
                             <th>Address</th>
                             <th>Price</th>
+                            <th>Manufacturing</th>
                         </tr>
 
                         @foreach($usersProperties as $property)
@@ -33,6 +34,7 @@
                             <!-- <td>{{ $property->type }}</td> -->
                             <td>{{ $property->address }}</td>
                             <td>{{ $property->price }}</td>
+                            <td>{{ $property->manufacturing }}</td>
                         </tr>
                         @endforeach
                     </table>
