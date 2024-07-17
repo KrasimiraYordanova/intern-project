@@ -9,6 +9,7 @@
             @include('custom-navigation')
         </div>
     </x-slot>
+    <div id="confirmationModal"></div>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -34,7 +35,7 @@
                             <td>{{ $property->address }}</td>
                             <td>{{ $property->price }}</td>
                             <td>
-                                <button onclick="document.getElementById('id01').style.display='block'">Delete</button>
+                                <button id="smallButton" data-target="#smallModal" data-attr="{{ $property->id }}" title="Delete Property">Delete</button>
                             </td>
                         </tr>
                         @endforeach
@@ -45,39 +46,55 @@
         </div>
     </div>
 
-
-
-    @if(count($properties) !== 0)
-    <div id="id01" class="modal">
-        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
-        <form class="modal-content" method="POST" accept="{{ route('admin.user.usersPropertiesDestroyProperty' , [$property->user_id, $property->id]) }}">
-            @csrf
-            <div class="container">
-                <h1>Delete Property</h1>
-                <p>Are you sure you want to delete this property?</p>
-
-                <div class="clearfix">
-                    <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                    <button onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</button>
+    <!-- small modal -->
+    <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="smallBody">
+                    <div>
+                        <!-- the result to be displayed apply here -->
+                    </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
-    @endif
 
 </x-app-layout>
 
-<script>
-    // Get the modal
-    var modal = document.getElementById('id01');
 
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    $(document).on('click', '#smallButton', function(event) {
+        event.preventDefault();
+        let href = $(this).attr('data-attr');
+        const url = `/admin/deleteconfirmation/property/${href}`;
+        // console.log(url);
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(result) {
+                console.log(result);
+                $('#smallModal').modal("show");
+                $('#smallBody').html(result).show();
+            },
+            complete: function() {
+                // $('#loader').hide();
+            },
+            error: function(jqXHR, testStatus, error) {
+                console.log(error);
+                alert("Page " + url + " cannot open. Error:" + error);
+                // $('#loader').hide();
+            },
+            timeout: 8000
+        })
+    });
 </script>
+
 
 <style>
     .nav-models-flex {
@@ -104,57 +121,5 @@
 
     .scratched {
         text-decoration: line-through;
-    }
-
-
-
-    .modal {
-        display: none;
-        /* Hidden by default */
-        position: fixed;
-        /* Stay in place */
-        z-index: 1;
-        /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%;
-        /* Full width */
-        height: 100%;
-        /* Full height */
-        overflow: auto;
-        /* Enable scroll if needed */
-        background-color: #474e5d;
-        padding-top: 50px;
-    }
-
-    /* Modal Content/Box */
-    .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto 15% auto;
-        /* 5% from the top, 15% from the bottom and centered */
-        border: 1px solid #888;
-        width: 80%;
-        /* Could be more or less, depending on screen size */
-    }
-
-    .container {
-        padding: 16px;
-        text-align: center;
-    }
-
-    /* Clear floats */
-    .clearfix::after {
-        content: "";
-        clear: both;
-        display: table;
-    }
-
-    .close {
-        position: absolute;
-        right: 35px;
-        top: 15px;
-        font-size: 40px;
-        font-weight: bold;
-        color: #f1f1f1;
     }
 </style>

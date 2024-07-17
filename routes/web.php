@@ -9,7 +9,6 @@ use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsNotAdmin;
 use App\Http\Controllers\PropertyController;
 
-
 // COMMON GUEST ROUTE
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +27,8 @@ Route::get('/admin/dashboard', [DashboardController::class, 'allCarsAndPropertie
 // features:
 // PROPERTY    // CAR    // USER
 Route::group(['middleware' => ['auth', 'verified', IsAdmin::class]], function () {
+    
+
     Route::get('/admin/properties', [PropertyController::class, 'index'])->name('admin.property.index');
     Route::get('/admin/property/{property}', [PropertyController::class, 'show'])->name('admin.property.detail');
     Route::post('/admin/delete/property/{property}', [PropertyController::class, 'destroy'])->name('admin.property.destroy');
@@ -44,12 +45,15 @@ Route::group(['middleware' => ['auth', 'verified', IsAdmin::class]], function ()
     Route::put('/admin/user/{user}', [UserController::class, 'update'])->name('admin.user.update');
     Route::post('/admin/delete/user/{user}', [UserController::class, 'destroy'])->name('admin.user.destroy');
 
+    Route::get('/admin/deleteconfirmation/property/{id}', [PropertyController::class, 'delete'])->name('admin.property.delete');
+
     Route::resource('user.car', 'CarController');
-    Route::get('/admin/user/{user}/cars', [CarController::class, 'usersCars'])->middleware(['auth', 'verified', IsAdmin::class])->name('admin.user.usersCars');
-    Route::post('/admin/delete/user/{user}/car', [CarController::class, 'usersCarsDestroyCar'])->middleware(['auth', 'verified', IsAdmin::class])->name('admin.user.usersCarsDestroyCar');
+    Route::get('/admin/user/{user}/cars', [CarController::class, 'usersCars'])->name('admin.user.usersCars');
+    Route::post('/admin/delete/user/{user}/car', [CarController::class, 'usersCarsDestroyCar'])->name('admin.user.usersCarsDestroyCar');
+    
     Route::resource('user.property', 'PropertyController');
-    Route::get('/admin/user/{user}/properties', [PropertyController::class, 'usersProperties'])->middleware(['auth', 'verified', IsAdmin::class])->name('admin.user.usersProperties');
-    Route::post('/admin/delete/user/{user}/property/{property}', [PropertyController::class, 'usersPropertiesDestroyProperty'])->middleware(['auth', 'verified', IsAdmin::class])->name('admin.user.usersPropertiesDestroyProperty');
+    Route::get('/admin/user/{user}/properties', [PropertyController::class, 'usersProperties'])->name('admin.user.usersProperties');
+    Route::post('/admin/delete/user/{user}/property/{property}', [PropertyController::class, 'usersPropertiesDestroyProperty'])->name('admin.user.usersPropertiesDestroyProperty');
 });
 
 Route::group(['middleware' => ['auth', 'verified', IsNotAdmin::class]], function () {

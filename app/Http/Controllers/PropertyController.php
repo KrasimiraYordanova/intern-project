@@ -101,6 +101,13 @@ class PropertyController extends Controller
         }
     }
 
+    public function delete($id) {
+        dd($id);
+        $property = Property::find($id);
+
+        return view('admin.property.delete', compact('property'));
+    }
+
     public function usersPropertiesDestroyProperty(User $user, Property $property)
     {
             $property->delete();
