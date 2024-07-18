@@ -12,7 +12,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <a href="{{ route('admin.user.create') }}" class="button">Add user</a>
+            <a href="{{ route('admin.user.create') }}" class="butt">Add user</a>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 text-center">
 
@@ -43,7 +43,7 @@
                                 @endforeach
                             </td>
                             <td>
-                            <p>{{ $user->properties->count() }}</p>
+                                <p>{{ $user->properties->count() }}</p>
                                 @foreach($user->properties as $property)
                                 <p><a href="{{ route( 'admin.property.detail', ['property' => $property->id]) }}">{{$property->type}}</a></p>
                                 @endforeach
@@ -51,7 +51,7 @@
 
                             <td>
                                 <p><a href="{{ route('admin.user.edit', ['user' => $user->id]) }}">Edit</a></p>
-                                <button onclick="document.getElementById('id01').style.display='block'">Delete</button>
+                                <a id="smallButton" data-target="#smallModal" data-attr="{{ $user->id }}">Delete</a>
                             </td>
                         </tr>
                         @endforeach
@@ -64,36 +64,34 @@
 
 
 
-    @if(count($users) !== 0)
-    <div id="id01" class="modal">
-        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
-        <form class="modal-content" method="POST" action="{{ route('admin.user.destroy', ['user' => $user->id]) }}">
-            @csrf
-            <div class="container">
-                <h1>Delete Car</h1>
-                <p>Are you sure you want to delete this car?</p>
-
-                <div class="clearfix">
-                    <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                    <button onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    @endif
+    <x-ajax-confirmation-modal href="{{ route('admin.user.index') }}"></x-ajax-confirmation-modal>
 
 </x-app-layout>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
-    // Get the modal
-    var modal = document.getElementById('id01');
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+    $(document).on('click', '#smallButton', function(event) {
+        event.preventDefault();
+        let id = $(this).attr('data-attr');
+        const url = `/admin/deleteconfirmation/user/${id}`;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(result) {
+                $('#smallModal').modal("show");
+                $('#smallBody').html(result).show();
+            },
+            complete: function() {
+                // $('#loader').hide();
+            },
+            error: function(jqXHR, testStatus, error) {
+                console.log(error);
+                alert("Page " + url + " cannot open. Error:" + error);
+                // $('#loader').hide();
+            },
+            timeout: 8000
+        })
+    });
 </script>
 
 <style>
@@ -123,57 +121,7 @@
         text-decoration: line-through;
     }
 
-    .modal {
-        display: none;
-        /* Hidden by default */
-        position: fixed;
-        /* Stay in place */
-        z-index: 1;
-        /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%;
-        /* Full width */
-        height: 100%;
-        /* Full height */
-        overflow: auto;
-        /* Enable scroll if needed */
-        background-color: #474e5d;
-        padding-top: 50px;
-    }
-
-    /* Modal Content/Box */
-    .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto 15% auto;
-        /* 5% from the top, 15% from the bottom and centered */
-        border: 1px solid #888;
-        width: 80%;
-        /* Could be more or less, depending on screen size */
-    }
-
-    .container {
-        padding: 16px;
-        text-align: center;
-    }
-
-    /* Clear floats */
-    .clearfix::after {
-        content: "";
-        clear: both;
-        display: table;
-    }
-
-    .close {
-        position: absolute;
-        right: 35px;
-        top: 15px;
-        font-size: 40px;
-        font-weight: bold;
-        color: #f1f1f1;
-    }
-
-    .button {
+    .butt {
         background-color: #000;
         border: none;
         color: white;

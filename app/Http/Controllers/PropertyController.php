@@ -86,6 +86,11 @@ class PropertyController extends Controller
         return redirect()->route('user.property.detail', ['property' => $property->id])->with('success', 'Property updated successfully!');
     }
 
+    public function delete($id) {
+        $property = Property::find($id);
+        return view('admin.property.delete', compact('property'));
+    }
+
     // admins and users can access
     public function destroy(Property $property)
     {
@@ -99,13 +104,6 @@ class PropertyController extends Controller
                 return redirect()->route('user.property.index')->with('Property deleted successfully!');
             }
         }
-    }
-
-    public function delete($id) {
-        dd($id);
-        $property = Property::find($id);
-
-        return view('admin.property.delete', compact('property'));
     }
 
     public function usersPropertiesDestroyProperty(User $user, Property $property)

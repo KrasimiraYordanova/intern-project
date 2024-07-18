@@ -1,10 +1,10 @@
-<form action="{{  route('admin.user.usersPropertiesDestroyProperty', [$property->user_id, $property->id]) }}" method="post" class="form-flex">
+<form action="{{ route('admin.car.destroy', [$car->id]) }}" method="post" class="form-flex">
     <div class="modal-body">
         @csrf
-        <h5 class="text-center">Are you sure you want to delete this {{ $property->type }} ?</h5>
+        <h5 class="text-center">Are you sure you want to delete this {{ $car->name }} ?</h5>
     </div>
     <div class="modal-footer">
-        <a type="button" class="btn btn-secondary button" data-dismiss="modal" href="{{ route('admin.user.usersProperties', ['user' => $property->user_id]) }}">Cancel</a>
+        <a type="button" class="btn btn-secondary button" data-dismiss="modal" href="{{ route('admin.car.index') }}">Cancel</a>
         <button type="submit" class="btn btn-danger button">Delete</button>
     </div>
 </form>

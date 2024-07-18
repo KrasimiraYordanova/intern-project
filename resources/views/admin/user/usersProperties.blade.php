@@ -35,7 +35,7 @@
                             <td>{{ $property->address }}</td>
                             <td>{{ $property->price }}</td>
                             <td>
-                                <button id="smallButton" data-target="#smallModal" data-attr="{{ $property->id }}" title="Delete Property">Delete</button>
+                                <a id="smallButton" data-target="#smallModal" data-attr="{{ $property->id }}">Delete</a>
                             </td>
                         </tr>
                         @endforeach
@@ -46,23 +46,7 @@
         </div>
     </div>
 
-    <!-- small modal -->
-    <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="smallBody">
-                    <div>
-                        <!-- the result to be displayed apply here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-ajax-confirmation-modal href="{{ route('admin.user.usersProperties', [$user->id]) }}"></x-ajax-confirmation-modal>
 
 </x-app-layout>
 
@@ -71,14 +55,12 @@
 <script>
     $(document).on('click', '#smallButton', function(event) {
         event.preventDefault();
-        let href = $(this).attr('data-attr');
-        const url = `/admin/deleteconfirmation/property/${href}`;
-        // console.log(url);
+        let id = $(this).attr('data-attr');
+        const url = `/admin/deleteconfirmation/property/${id}`;
         $.ajax({
             url: url,
             type: 'GET',
             success: function(result) {
-                console.log(result);
                 $('#smallModal').modal("show");
                 $('#smallBody').html(result).show();
             },
@@ -121,5 +103,9 @@
 
     .scratched {
         text-decoration: line-through;
+    }
+
+    .smallButton {
+        cursor: pointer;
     }
 </style>

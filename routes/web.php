@@ -45,7 +45,9 @@ Route::group(['middleware' => ['auth', 'verified', IsAdmin::class]], function ()
     Route::put('/admin/user/{user}', [UserController::class, 'update'])->name('admin.user.update');
     Route::post('/admin/delete/user/{user}', [UserController::class, 'destroy'])->name('admin.user.destroy');
 
+    Route::get('/admin/deleteconfirmation/car/{id}', [CarController::class, 'delete'])->name('admin.car.delete');
     Route::get('/admin/deleteconfirmation/property/{id}', [PropertyController::class, 'delete'])->name('admin.property.delete');
+    Route::get('/admin/deleteconfirmation/user/{id}', [UserController::class, 'delete'])->name('admin.user.delete');
 
     Route::resource('user.car', 'CarController');
     Route::get('/admin/user/{user}/cars', [CarController::class, 'usersCars'])->name('admin.user.usersCars');

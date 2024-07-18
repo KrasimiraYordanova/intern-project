@@ -85,6 +85,11 @@ class CarController extends Controller
         }
     }
 
+    public function delete($id) {
+        $car = Car::find($id);
+        return view('admin.car.delete', compact('car'));
+    }
+
     public function destroy(Car $car)
     {
         if (auth()->user()->role === 'admin') {
