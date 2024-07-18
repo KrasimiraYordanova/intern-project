@@ -29,13 +29,13 @@
 
                         @foreach($properties as $property)
                         <tr class="{{ $property->deleted_at ? 'scratched' : '' }}">
-                            
+
                             <td><a href="{{ route( 'admin.property.detail', ['property' => $property->id]) }} ">{{ $property->id }}</a></td>
                             <td>{{ $property->type }}</td>
                             <td>{{ $property->address }}</td>
                             <td>{{ $property->price }}</td>
                             <td>
-                                <button onclick="document.getElementById('id01').style.display='block'">Delete</button>
+                                <a id="smallButton" data-target="#smallModal" data-attr="{{ $property->id }}">Delete</a>
                             </td>
                         </tr>
                         @endforeach
@@ -47,37 +47,34 @@
     </div>
 
 
-
-    @if(count($properties) !== 0)
-    <div id="id01" class="modal">
-        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
-        <form class="modal-content" method="POST" action="{{ route('admin.property.destroy' , ['property' => $property->id]) }}">
-            @csrf
-            <div class="container">
-                <h1>Delete Car</h1>
-                <p>Are you sure you want to delete this car?</p>
-
-                <div class="clearfix">
-                    <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                    <button onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    @endif
+    <x-ajax-confirmation-modal href="{{ route('admin.property.index') }}"></x-ajax-confirmation-modal>
 
 </x-app-layout>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
-    // Get the modal
-    var modal = document.getElementById('id01');
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+    $(document).on('click', '#smallButton', function(event) {
+        event.preventDefault();
+        let id = $(this).attr('data-attr');
+        const url = `/admin/deleteconfirmation/property/${id}`;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(result) {
+                $('#smallModal').modal("show");
+                $('#smallBody').html(result).show();
+            },
+            complete: function() {
+                // $('#loader').hide();
+            },
+            error: function(jqXHR, testStatus, error) {
+                console.log(error);
+                alert("Page " + url + " cannot open. Error:" + error);
+                // $('#loader').hide();
+            },
+            timeout: 8000
+        })
+    });
 </script>
 
 <style>
