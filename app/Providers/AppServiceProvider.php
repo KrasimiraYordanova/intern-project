@@ -2,17 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\CarCreated;
-use App\Listeners\NotifyAdminAboutNewCar;
 use Illuminate\Support\ServiceProvider;
-
-use App\Models\Car;
-use App\Policies\CarPolicy;
-use Illuminate\Support\Facades\Gate;
-
-use App\Models\User;
-use App\Observers\UserObserver;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,10 +15,5 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        User::observe(UserObserver::class);
-        // Event::listen(
-        //     CarCreated::class,
-        //     NotifyAdminAboutNewCar::class,
-        // );
     }
 }

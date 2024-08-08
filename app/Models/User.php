@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable; use SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'users';
 
@@ -29,24 +29,9 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    // deleting related model using events
     public static function boot() {
         parent::boot();
-
-        // static::deleting(function ( User $user) {
-        //     $user->cars()->delete();
-        //     $user->properties()->delete();
-        // });
-
-        // static::updating(function(User $user) {
-        //     Cache::
-        // })
-
-        // static::restoring(function (User $user) {
-        //     $user->cars()->delete();
-        // });
     }
-
 
     protected function casts(): array
     {
@@ -56,21 +41,28 @@ class User extends Authenticatable
         ];
     }
 
-    public function cars(): HasMany
+    public function carsAttaches(): BelongsToMany
     {
-        return $this->hasMany(Car::class);
+        return $this->belongsToMany(CarAttach::class, 'users_cars_attaches', 'user_id', 'car_attach_id')->withPivot('id', 'car_attach_id');
+        // return $this->through('cars_attaches')->has('cars');
     }
 
-    public function properties(): HasMany
+    public function propertiesAttaches(): BelongsToMany
     {
-        return $this->hasMany(Property::class);
+        return $this->belongsToMany(PropertyAttach::class, 'users_properties_attaches', 'user_id','property_attach_id')->withPivot('id', 'property_attach_id');
     }
+
+    // public function cars(): HasManyThrough {
+    //     return $this->hasManyThrough(Car::class, CarAttach::class);
+    // }
+
+
 
     public function getUser() {
         return auth()->user();
     }
 
-    public function scopeGetAdmins(Builder $query) {
-        return $query->where('role_id', 1);
+    public function scopeGetNameContaining(Builder $query, string $name) {
+        return $query->where('name', 'LIKE', '%'. $name . '%');
     }
 }

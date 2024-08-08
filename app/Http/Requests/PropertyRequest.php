@@ -24,8 +24,8 @@ class PropertyRequest extends FormRequest
         return [
             'type' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string'],
-            'price' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
-            'manufacturing' => ['string'],
+            'price' => ['required', 'integer'],
+            'manufacturing' => ['integer'],
         ];
     }
 }

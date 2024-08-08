@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Car extends Model
 {
-    use HasFactory; use SoftDeletes;
+    use HasFactory, SoftDeletes;
     
     protected $table = 'cars';
 
@@ -20,30 +20,17 @@ class Car extends Model
         'year',
         'price',
         'manufacturing',
-        'user_id',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
-    /**
-     * Get the user that owns the car.
-     */
-    public function user(): BelongsTo
+    public function carsAttaches(): HasMany
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(CarAttach::class, 'cars_attaches');
     }
 
-
-    public function getAll()
-    {
-        $cars = DB::select('select * from cars');
-        return $cars;
-    }
-
-    public function scopeQueryAllCarsByUser($userId)
-    {
-        $users = DB::table('cars')
-            ->where('user_id', '=', $userId)
-            ->get();
-
-            return $users;
-    }
+    // public function users(): HasManyThrough {
+    //     return $this->hasManyThrough(User::class, CarAttach::class);
+    // }
 }

@@ -21,6 +21,8 @@ class IsAdmin
     {
         if($request->user() && $request->user()->role === 'admin') {
             return $next($request);
+        } else if($request->user() && $request->user()->role === 'user') {
+            return $next($request);
         }
 
         return redirect()->route('dashboard');

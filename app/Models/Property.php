@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Property extends Model
 {
-    use HasFactory; use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'properties';
 
@@ -21,20 +20,17 @@ class Property extends Model
         'address',
         'price',
         'manufacturing',
-        'user_id',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
-    public function user(): BelongsTo
+    public function propertiesAttaches(): HasMany
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(PropertyAttach::class, 'properties_attaches');
     }
 
-    // Query scope implementation testing
     public function scopeType(Builder $query, string $type): Builder | QueryBuilder {
         return $query->where('type', 'LIKE', '%'.$type.'%');
-    }
-
-    public function scopeAllPropertiesByUser($user) {
-        return DB::select('select * from properties where user_id = ?', [$user]);
     }
 }

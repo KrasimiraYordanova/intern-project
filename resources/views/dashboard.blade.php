@@ -2,7 +2,12 @@
     <x-slot name="header">
         <div class="nav-models nav-models-flex">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                @if(Auth::user()->role === 'admin')
+                {{ __('Admin Dashboard') }}
+                @endif
+                @if(Auth::user()->role === 'user')
                 {{ __('User Dashboard') }}
+                @endif
             </h2>
 
             <!-- nav links for models (users, cars, properties) -->
@@ -10,54 +15,93 @@
         </div>
     </x-slot>
 
-    <!-- {{ Auth::user()->role_id }} -->
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class=" center">
-                {{ __("All my properties and cars") }}
-            </div>
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("My properties") }}
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg text-center">
+                <div class="p-6 text-gray-900 text-center">
                     <!-- displaying user's cars and properties -->
 
+                    {{ __("All properties") }}
                     <table>
                         <tr>
+                            @if(Auth::user()->role === 'admin')
+                            <th>Id</th>
+                            @endif
                             <th>Type</th>
                             <th>Address</th>
                             <th>Price</th>
+                            <th>Manufacturing</th>
+                            @if(Auth::user()->role === 'user')
+                            <th>Add Item</th>
+                            @endif
                         </tr>
-
                         @foreach($properties as $property)
                         <tr>
-                            <td><a href="{{ route( 'user.property.detail', ['property' => $property->id]) }} ">{{ $property->type }}</a></td>
-                            <td>{{ $property->address }}</td>
-                            <td>{{ $property->price }}</td>
+                            @if(Auth::user()->role === 'admin')
+                            <td>{{$property->id}}</td>
+                            @endif
+                            <td><a href="{{ route( 'property.detail', ['propertyId' => $property->id]) }} ">{{$property->type}}</a></td>
+                            <td>{{$property->address}}</td>
+                            <td>{{$property->price}}</td>
+                            <td>{{$property->manufacturing}}</td>
+                            @if(Auth::user()->role === 'user')
+                            <td><a href="{{ route( 'attach.property', ['propertyId' => $property->id]) }} ">Add</a></td>
+                            @endif
                         </tr>
                         @endforeach
                     </table>
 
-                    {{ __("My cars") }}
+                    {{ __("All cars") }}
                     <table>
                         <tr>
+                            @if(Auth::user()->role === 'admin')
+                            <th>Id</th>
+                            @endif
                             <th>Brand</th>
                             <th>Model</th>
                             <th>Year</th>
                             <th>Price</th>
+                            <th>Manufacturing</th>
+                            @if(Auth::user()->role === 'user')
+                            <th>Add Item</th>
+                            @endif
                         </tr>
-
                         @foreach($cars as $car)
                         <tr>
-                            <td><a href="{{ route( 'user.car.detail', ['car' => $car->id]) }} ">{{ $car->brand }}</a></td>
-                            <td>{{ $car->model }}</td>
-                            <td>{{ $car->year }}</td>
-                            <td>{{ $car->price }}</td>
+                            @if(Auth::user()->role === 'admin')
+                            <td>{{$car->id}}</td>
+                            @endif
+                            <td><a href="{{ route( 'car.detail', ['carId' => $car->id]) }} ">{{$car->brand}}</a></td>
+                            <td>{{$car->model}}</td>
+                            <td>{{$car->year}}</td>
+                            <td>{{$car->price}}</td>
+                            <td>{{$car->manufacturing}}</td>
+                            @if(Auth::user()->role === 'user')
+                            <td><a href="{{ route( 'attach.car', ['carId' => $car->id]) }} ">Add</a></td>
+                            @endif
                         </tr>
                         @endforeach
                     </table>
 
-
+                    @if(Auth::user()->role === 'admin')
+                    {{ __("All users") }}
+                    <table>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                        @foreach($users as $user)
+                        <tr>
+                            <td>{{$user->id}}</td>
+                            <td><a href="{{ route( 'user.detail', ['userId' => $user->id]) }} ">{{$user->name}}</a></td>
+                            <td>{{$user->email}}</td>
+                            <td>{{$user->role}}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                    @endif
                 </div>
             </div>
         </div>
@@ -65,11 +109,6 @@
 </x-app-layout>
 
 <style>
-    .nav-flex {
-        display: flex;
-        gap: 2rem;
-    }
-
     .nav-models-flex {
         display: flex;
         justify-content: space-between;
@@ -92,13 +131,11 @@
         background-color: #dddddd;
     }
 
-    table {
-        margin-bottom: 2rem;
-        margin-top: 1rem;
+    .scratched {
+        text-decoration: line-through;
     }
 
-    .center {
-        text-align: center;
-        margin-bottom: 2rem;
+    .color {
+        color: green;
     }
 </style>
