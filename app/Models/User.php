@@ -11,6 +11,44 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 
+
+/**
+ * @OA\Schema(
+ *     schema="User",
+ *     type="object",
+ *     title="User",
+ *     required={"id", "name", "email", "password", "role"},
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer",
+ *         format="int64",
+ *         description="User ID"
+ *     ),
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         description="User's name"
+ *     ),
+ *     @OA\Property(
+ *         property="email",
+ *         type="string",
+ *         format="email",
+ *         description="User's email"
+ *     ),
+ *     @OA\Property(
+ *         property="password",
+ *         type="string",
+ *         format="password",
+ *         description="User's password"
+ *     ),
+ *     @OA\Property(
+ *         property="role",
+ *         type="string",
+ *         description="User's role"
+ *     ),
+ * )
+ */
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
@@ -44,17 +82,12 @@ class User extends Authenticatable
     public function carsAttaches(): BelongsToMany
     {
         return $this->belongsToMany(CarAttach::class, 'users_cars_attaches', 'user_id', 'car_attach_id')->withPivot('id', 'car_attach_id');
-        // return $this->through('cars_attaches')->has('cars');
     }
 
     public function propertiesAttaches(): BelongsToMany
     {
         return $this->belongsToMany(PropertyAttach::class, 'users_properties_attaches', 'user_id','property_attach_id')->withPivot('id', 'property_attach_id');
     }
-
-    // public function cars(): HasManyThrough {
-    //     return $this->hasManyThrough(Car::class, CarAttach::class);
-    // }
 
 
 

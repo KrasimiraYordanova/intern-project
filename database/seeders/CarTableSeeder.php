@@ -13,9 +13,9 @@ class CarTableSeeder extends Seeder
     {
         // Car::factory()->count(5)->create();
 
-        foreach(Car::all() as $car) {
-            $users = User::inRandomOrder()->take(rand(1, 5))->pluck('id');
-            $car->users()->attach($users);
-        }
+        // foreach(Car::all() as $car) {
+        //     $users = User::inRandomOrder()->take(rand(1, 5))->pluck('id');
+        //     $car->users()->attach($users);
+        // }
     }
 }

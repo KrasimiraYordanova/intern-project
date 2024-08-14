@@ -31,22 +31,33 @@
                         </tr>
 
                         @foreach($users as $user)
-                        <tr class="{{ $user->deleted_at ? 'scratched' : '' }}">
-                            <td><a href="{{ route( 'user.detail', ['userId' => $user->id]) }} ">{{ $user->id }}</a></td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->role }}</td>
-                            <td>
-                            
+                        <tr class="{{ $user['deleted_at'] ? 'scratched' : '' }}">
+                            <td><a href="{{ route( 'user.detail', ['userId' => $user['id'] ]) }} ">{{ $user['id'] }}</a></td>
+                            <td>{{ $user['name'] }}</td>
+                            <td>{{ $user['email'] }}</td>
+                            <td>{{ $user['role'] }}</td>
 
-                            </td>
                             <td>
-                                
+                                <div class='margin'>
+                                    @foreach($user['cars'] as $car)
+                                    <p><span>{{ $car['id'] }}</span> - UUID: {{ $car['uuid'] }}</p>
+                                    <p>CAR INFO: <a href="{{ route( 'car.detail', ['carId' => $car['id']]) }}">{{ $car['brand'] }}</a> {{ $car['model'] }} {{ $car['manufacturing'] }}</p>
+                                    @endforeach
+                                </div>
+                            </td>
 
-                            </td>
                             <td>
-                                <p><a href="{{ route('user.edit', ['userId' => $user->id]) }}">Edit</a></p>
-                                <a id="smallButton" data-target="#smallModal" data-attr="{{ $user->id }}">Delete</a>
+                                <div class='margin'>
+                                    @foreach($user['properties'] as $property)
+                                    <p><span>{{ $property['id'] }}</span> - UUID: {{ $property['uuid'] }}</p>
+                                    <p>CAR INFO: <a href="{{ route( 'property.detail', ['propertyId' => $property['id']]) }}">{{ $property['type'] }}</a> {{ $property['address'] }} {{ $property['price'] }} {{ $property['manufacturing'] }}</p>
+                                    @endforeach
+                                </div>
+                            </td>
+
+                            <td>
+                                <p><a href="{{ route('user.edit', ['userId' => $user['id']]) }}">Edit</a></p>
+                                <a id="smallButton" data-target="#smallModal" data-attr="{{ $user['id'] }}">Delete</a>
                             </td>
                         </tr>
                         @endforeach
@@ -128,5 +139,9 @@
         border-radius: 0.3rem;
         margin: 0 auto;
         margin-bottom: 1rem;
+    }
+
+    .margin {
+        margin: 2rem 0 2rem 0;
     }
 </style>

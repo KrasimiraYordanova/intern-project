@@ -37,10 +37,10 @@ class PropertyAttachRepository implements PropertyAttachRepositoryInterface
     }
 
     /**
-     * @param int $id
-     * @return null|PropertyAttach
+     * @param int 
+     * @return null|Collection
      */
-    public function getPropertysAttachsByPropertyId(int $id) : ?PropertyAttach {
+    public function getPropertysAttachsByPropertyId(int $id) : ?Collection {
         return PropertyAttach::where('property_id', $id)->get();
     }
 }

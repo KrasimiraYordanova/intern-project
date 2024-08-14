@@ -9,6 +9,40 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @OA\Schema(
+ *     schema="Property",
+ *     type="object",
+ *     title="Property",
+ *     required={"id", "type", "address", "price", "manufacturing"},
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer",
+ *         format="int64",
+ *         description="Property ID"
+ *     ),
+ *     @OA\Property(
+ *         property="type",
+ *         type="string",
+ *         description="Property's type"
+ *     ),
+ *     @OA\Property(
+ *         property="address",
+ *         type="string",
+ *         description="Property's address"
+ *     ),
+ *     @OA\Property(
+ *         property="price",
+ *         type="integer",
+ *         description="Property's price"
+ *     ),
+ *     @OA\Property(
+ *         property="manufacturing",
+ *         type="integer",
+ *         description="Property's manufacturing"
+ *     ),
+ * )
+ */
 class Property extends Model
 {
     use HasFactory, SoftDeletes;

@@ -18,6 +18,14 @@ class PropertyRepository implements PropertyRepositoryInterface
     }
 
     /**
+     * @return Property
+     */
+    public function getPropertyWithTrash($model): ?Property
+    {
+        return Property::withTrashed()->where('model',  $model)->first();
+    }
+
+    /**
      * @param int $id
      * @return null|Property
      */

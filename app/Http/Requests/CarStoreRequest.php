@@ -22,6 +22,7 @@ class CarStoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd(123);
         return [
             'brand' => ['required', 'string'],
             'model' => ['required', 'string', 'unique:cars'],
@@ -29,19 +30,5 @@ class CarStoreRequest extends FormRequest
             'price' => ['required', 'integer'],
             'manufacturing' => ['required', 'integer']
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            $modelAttribute = $this->input('model');
-
-            $model = Car::withTrashed()->where('model', $modelAttribute)->first();
-            if ($model && $model->trashed()) {
-                $model->restore();
-                $model->update(['brand', 'year', 'price', 'manufacturing']);
-                return redirect()->route('car.index')->with('success', 'Car restored successfully!');
-            }
-        });
     }
 }

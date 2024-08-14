@@ -23,24 +23,5 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('update-car', function ($user, $car) {
-            return $user->id == $car->user_id;
-        });
-
-        Gate::define('delete-car', function($user, $car) {
-            return $user->id == $car->user_id;
-        });
-
-        // Gate::before(function ($user, $ability) {
-        //     if($user->role === 'admin' && in_array($ability, ['delete-car'])) {
-        //         return true;
-        //     }
-        // });
-
-        // Gate::after(function ($user, $ability, $result) {
-        //     if($user->role === 'admin') {
-        //         return true;
-        //     }
-        // });
     }
 }

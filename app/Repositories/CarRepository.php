@@ -20,12 +20,20 @@ class CarRepository implements CarRepositoryInterface
     }
 
     /**
+     * @return Car
+     */
+    public function getCarWithTrash($model): ?Car
+    {
+        return Car::withTrashed()->where('model',  $model)->first();
+    }
+
+    /**
      * @param int $id
      * @return null|Car
      */
     public function getCarById(int $id): ?Car
     {
-        return Car::find($id);
+        return Car::find((int)$id);
     }
 
 

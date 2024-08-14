@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Contract\CarAttachRepositoryInterface;
 use App\Models\CarAttach;
+use Illuminate\Support\Collection;
 
 class CarAttachRepository implements CarAttachRepositoryInterface
 {
@@ -36,10 +37,10 @@ class CarAttachRepository implements CarAttachRepositoryInterface
     }
 
     /**
-     * @param int $id
-     * @return null|CarAttach
+     * @param int
+     * @return null|Collection
      */
-    public function getCarsAttachsByCarId(int $id) : ?CarAttach {
+    public function getCarsAttachsByCarId(int $id) : ?Collection {
         return CarAttach::where('car_id', $id)->get();
     }
 }

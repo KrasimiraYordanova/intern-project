@@ -57,6 +57,9 @@ class CarAttachService {
     public function deleteSelectedCarAttach(int $id): void
     {
         $carAttach = $this->getById($id);
+        if (is_null($carAttach)) {
+            throw new RecordNotFound();
+        }
         $this->carAttachRepository->deleteCarAttach($carAttach);
     }
 
@@ -64,15 +67,11 @@ class CarAttachService {
      * Get carsAttaches by car ID.
      *
      * @param int $carAttachId The ID of the car.
-     * @return null|CarAttach The carAttach object.
-     * @throws RecordNotFound If the carsAttaches is not found.
+     * @return null|Collection The carAttach object.
      */
-    public function getCarsAttachesByCarIid(int $id): ?CarAttach
+    public function getCarsAttachesByCarIid(int $id): ?Collection
     {
-        $carsAttaches = $this->carAttachRepository->getCarAttachById($id);
-        if (is_null($carsAttaches)) {
-            throw new RecordNotFound();
-        }
+        $carsAttaches = $this->carAttachRepository->getCarsAttachsByCarId($id);
         return $carsAttaches;
     }
 }

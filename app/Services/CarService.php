@@ -30,6 +30,16 @@ class CarService {
         return $this->carRepository->getAllCars();
     }
 
+    /**
+     * Get trashed car.
+     *
+     * @return Car
+     */
+    public function getWithTrash($model): ?Car
+    {
+        return $this->carRepository->getCarWithTrash($model);
+    }
+
      /**
      * Get a car by their ID.
      *
@@ -39,8 +49,8 @@ class CarService {
      */
     public function getById(int $carId): ?Car
     {
-        $car = $this->carRepository->getCarById($carId);
-        if (is_null($car)) {
+        $car = $this->carRepository->getCarById((int)$carId);
+        if (!$car) {
             throw new RecordNotFound();
         }
         return $car;
@@ -68,6 +78,9 @@ class CarService {
     public function updateSelectedCar(int $carId, array $data): Car
     {
         $car = $this->getById($carId);
+        if (is_null($car)) {
+            throw new RecordNotFound();
+        }
         $this->carRepository->updateCar($car, $data);
 
         return $car;
@@ -82,6 +95,9 @@ class CarService {
     public function deleteSelectedCar(int $carId): void
     {
         $car = $this->getById($carId);
+        if (is_null($car)) {
+            throw new RecordNotFound();
+        }
         $this->carRepository->deleteCar($car);
     }
 }

@@ -23,8 +23,10 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/dashboard', [DashboardController::class, 'allCarsPropertiesUsers'])->middleware(['auth', 'verified'])->name('dashboard');
 
+
 // ADMIN ROUTS
 Route::group(['middleware' => ['auth', 'verified', IsAdmin::class]], function () {
+
     // ADMIN -> ALL CRUD OPERATIONS ON CAR
     Route::get('/car/create', [CarController::class, 'create'])->name('car.create');
     Route::get('/car/{carId}/edit', [CarController::class, 'edit'])->name('car.edit');
@@ -42,7 +44,7 @@ Route::group(['middleware' => ['auth', 'verified', IsAdmin::class]], function ()
 
     // ADMIN -> ALL CRUD OPERATIONS ON USER
     Route::get('/users', [UserController::class, 'index'])->name('user.index');
-    Route::view('/user/create', 'user.create')->name('user.create');
+    Route::get('/user/create', [UserController::class, 'user.create'])->name('user.create');
     Route::get('/user/{userId}', [UserController::class, 'show'])->name('user.detail');
     Route::get('/user/{userId}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
@@ -76,5 +78,10 @@ Route::group(['middleware' => ['auth', 'verified', IsAdmin::class]], function ()
     Route::get('/add/car/{carId}', [CarController::class, 'attachCar'])->name('attach.car');
     Route::get('/add/property/{propertyId}', [PropertyController::class, 'attachProperty'])->name('attach.property');
 });
+
+Route::fallback(function () {
+    return view('notFound');
+});
+
 
 require __DIR__ . '/auth.php';

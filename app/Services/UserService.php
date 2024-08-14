@@ -70,6 +70,9 @@ class UserService
     public function updateSelectedUser(int $userId, array $data): User
     {
         $user = $this->getById($userId);
+        if (is_null($user)) {
+            throw new RecordNotFound();
+        }
         $this->userRepository->updateUser($user, $data);
 
         return $user;
@@ -84,6 +87,9 @@ class UserService
     public function deleteSelectedUser(int $userId): void
     {
         $user = $this->getById($userId);
+        if (is_null($user)) {
+            throw new RecordNotFound();
+        }
         $this->userRepository->deleteUser($user);
     }
 }

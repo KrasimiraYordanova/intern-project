@@ -30,6 +30,16 @@ class PropertyService {
         return $this->propertyRepository->getAllProperties();
     }
 
+    /**
+     * Get trashed property.
+     *
+     * @return Property
+     */
+    public function getWithTrash($model): ?Property
+    {
+        return $this->propertyRepository->getPropertyWithTrash($model);
+    }
+
       /**
      * Get a property by their ID.
      *
@@ -68,6 +78,9 @@ class PropertyService {
     public function updateSelectedProperty(int $propertyId, array $data): Property
     {
         $property = $this->getById($propertyId);
+        if (is_null($property)) {
+            throw new RecordNotFound();
+        }
         $this->propertyRepository->updateProperty($property, $data);
         return $property;
     }
@@ -81,6 +94,9 @@ class PropertyService {
     public function deleteSelectedProperty(int $propertyId): void
     {
         $property = $this->getById($propertyId);
+        if (is_null($property)) {
+            throw new RecordNotFound();
+        }
         $this->propertyRepository->deleteProperty($property);
     }
 }

@@ -37,7 +37,6 @@
         </div>
 
 
-
         <div id="id01" class="modal">
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
             <form class="modal-content" method="POST" action="{{ route('property.destroy' , ['propertyId' => $property->id]) }}">
@@ -45,6 +44,7 @@
                 <div class="container">
                     <h1>Delete Car</h1>
                     <p>Are you sure you want to delete this {{$property->type}} situated at/in {{$property->address}} ?</p>
+                    @dd($property->propertyAttId)
                     @if($property->uuid)
                     <input type="hidden" name="propertyAttId" value="{{$property->propertyAttId}}">
                     @endif

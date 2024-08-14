@@ -57,6 +57,9 @@ class PropertyAttachService {
     public function deleteSelectedPropertyAttach(int $id): void
     {
         $propertyAttach = $this->getById($id);
+        if (is_null($propertyAttach)) {
+            throw new RecordNotFound();
+        }
         $this->propertyAttachRepository->deletePropertyAttach($propertyAttach);
     }
 
@@ -64,15 +67,11 @@ class PropertyAttachService {
      * Get propertiesAttaches by car ID.
      *
      * @param int $propertyAttachId The ID of the property.
-     * @return null|PropertyAttach The propertyAttach object.
-     * @throws RecordNotFound If the propertysAttaches is not found.
+     * @return null|Collection The propertyAttach object.
      */
-    public function getPropertiesAttachesByCarIid(int $id): ?PropertyAttach
+    public function getPropertiesAttachesByPropertyIid(int $id): ?Collection
     {
-        $propertiesAttaches = $this->propertyAttachRepository->getPropertyAttachById($id);
-        if (is_null($propertiesAttaches)) {
-            throw new RecordNotFound();
-        }
+        $propertiesAttaches = $this->propertyAttachRepository->getPropertysAttachsByPropertyId($id);
         return $propertiesAttaches;
     }
 }
